@@ -1,0 +1,62 @@
+{
+  "arjit": {
+    "agar tum saath ho": {
+      "name": "Agar Tum Saath Ho.mp3",
+      "url": "https://firebasestorage.googleapis.com/v0/b/music-app-84927.appspot.com/o/arjit%2FAgar%20Tum%20Saath%20Ho.mp3?alt=media&token=b7b15a5e-7d76-4652-a9a1-0604858c7ba2"
+    },
+    "ami je tomar": {
+      "name": "Ami Je Tomar.mp3",
+      "url": "https://firebasestorage.googleapis.com/v0/b/music-app-84927.appspot.com/o/arjit%2FAmi%20Je%20Tomar.mp3?alt=media&token=e3f97e58-aa13-4a0e-a2b9-9e3eaf78b77d"
+    },
+    "channa mereya": {
+      "name": "Channa Mereya.mp3",
+      "url": "https://firebasestorage.googleapis.com/v0/b/music-app-84927.appspot.com/o/arjit%2FChanna%20Mereya.mp3?alt=media&token=80c86077-2d29-4712-a997-e04310d12b32"
+    },
+    "deva dev": {
+      "name": "Deva Dev.mp3",
+      "url": "https://firebasestorage.googleapis.com/v0/b/music-app-84927.appspot.com/o/arjit%2FDeva%20Dev.mp3?alt=media&token=ce31ad74-3be8-4a46-9a6b-3287a70e4dcb"
+    },
+    "hamdard": {
+      "name": "Hamdard.mp3",
+      "url": "https://firebasestorage.googleapis.com/v0/b/music-app-84927.appspot.com/o/arjit%2FHamdard.mp3?alt=media&token=15152157-421c-4b9d-bcef-ba36debd298d"
+    },
+    "hawayein": {
+      "name": "Hawayein.mp3",
+      "url": "https://firebasestorage.googleapis.com/v0/b/music-app-84927.appspot.com/o/arjit%2FHawayein.mp3?alt=media&token=cfe0cdc1-ec1a-4136-b22d-7aaa7ef45ce6"
+    },
+    "kesariya": {
+      "name": "Kesariya.mp3",
+      "url": "https://firebasestorage.googleapis.com/v0/b/music-app-84927.appspot.com/o/arjit%2FKesariya.mp3?alt=media&token=84ea290e-1ca2-4c22-8a42-5863f90a2798"
+    },
+    "phir le aya dil": {
+      "name": "Phir Le Aya Dil.mp3",
+      "url": "https://firebasestorage.googleapis.com/v0/b/music-app-84927.appspot.com/o/arjit%2FPhir%20Le%20Aya%20Dil.mp3?alt=media&token=8959c2d8-74f3-4387-81ac-5cc22ede3fc7"
+    }
+  },
+  "asha bosle": {
+    "chura liya hai tumne": {
+      "name": "Chura Liya Hai Tumne.mp3",
+      "url": "https://firebasestorage.googleapis.com/v0/b/music-app-84927.appspot.com/o/asha%2FChura%20Liya%20Hai%20Tumne.mp3?alt=media&token=77207439-678a-4f05-a401-780aff0ccd00"
+    },
+    "do lafzon ki": {
+      "name": "do lafzon ki.mp3",
+      "url": "https://firebasestorage.googleapis.com/v0/b/music-app-84927.appspot.com/o/asha%2Fdo%20lafzon%20ki.mp3?alt=media&token=cc676573-d867-4b60-9464-807688cd202d"
+    },
+    "haal kaisa hai janab ka": {
+      "name": "Haal Kaisa Hai Janab Ka.mp3",
+      "url": "https://firebasestorage.googleapis.com/v0/b/music-app-84927.appspot.com/o/asha%2FHaal%20Kaisa%20Hai%20Janab%20Ka.mp3?alt=media&token=04c861c5-5a1f-4867-a152-e2d9949e5fb1"
+    },
+    "jhumka gira re": {
+      "name": "Jhumka Gira Re.mp3",
+      "url": "https://firebasestorage.googleapis.com/v0/b/music-app-84927.appspot.com/o/asha%2FJhumka%20Gira%20Re.mp3?alt=media&token=219cd512-5712-4b6a-a5e2-0928858a2b86"
+    },
+    "maine raat guzari": {
+      "name": "Maine Raat Guzari.mp3",
+      "url": "https://firebasestorage.googleapis.com/v0/b/music-app-84927.appspot.com/o/asha%2FMaine%20Raat%20Guzari.mp3?alt=media&token=35702d8b-5b28-4092-badf-3dc6714c8fc3"
+    },
+    "tu tu hey wohi": {
+      "name": "Tu Tu Hey Wohi.mp3",
+      "url": "https://firebasestorage.googleapis.com/v0/b/music-app-84927.appspot.com/o/asha%2FTu%20Tu%20Hey%20Wohi.mp3?alt=media&token=67d9bc8d-12e4-464e-be6d-4555fa9d51f2"
+    }
+  }
+}
