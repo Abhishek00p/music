@@ -1,12 +1,6 @@
-import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:music/helper/colors.dart';
-import 'package:rxdart/rxdart.dart' as rxdart;
-import 'package:share_plus/share_plus.dart';
-
-import '../helper/audioPlayers.dart';
 import 'album.dart';
 
 class PlayListPlayer extends StatefulWidget {

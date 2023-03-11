@@ -1,9 +1,6 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
-import 'package:music/backend/database.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,8 +28,6 @@ class _AlbumPageState extends State<AlbumPage> {
   var audioDuration;
   var currentValue = 0.0;
   var positionofSlider;
-
-  final controller = Get.put(AllFav());
 
   Future<List> getALlFavs() async {
     final userID = FirebaseAuth.instance.currentUser!.uid;
@@ -278,10 +273,6 @@ class _AlbumPageState extends State<AlbumPage> {
 
                                 var url = widget.song["song_url"];
 
-                                // var url = await widget.res["asha bosle"][widget
-                                //     .res["asha bosle"].keys
-                                //     .toList()[next]]["url"];
-                                // print(url);
                                 await _audioPlayer.setUrl(url);
                                 if (_audioPlayer.playing) {
                                   _audioPlayer.pause();

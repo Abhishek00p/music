@@ -31,15 +31,6 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
       length: 3, // number of tabs
       child: Scaffold(
         backgroundColor: whitealpha,
-        // appBar: AppBar(
-        //   title: Text('My App'),
-        //   bottom: TabBar(
-        //     tabs: [
-        //       Tab(text: 'Tab 1'),
-        //       Tab(text: 'Tab 2'),
-        //     ],
-        //   ),
-        // ),
         body: Column(
           children: [
             Container(

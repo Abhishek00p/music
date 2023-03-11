@@ -1,20 +1,13 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music/helper/colors.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:music/backend/database.dart';
 import 'package:music/navtabs/fav.dart';
 import 'package:music/helper/tabs.dart';
-import 'package:music/helper/upload.dart';
 import 'package:music/screens/playlist.dart';
 import 'package:toast/toast.dart';
 
-import '../backend/firebaseDatabase.dart';
 import 'libraryNavPage.dart';
 import '../helper/listviewBuilder.dart';
 import 'postpage.dart';
@@ -111,23 +104,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int selectedType = 0;
 
-  final songList = [
-    {"Title": "Title", "Artist": "Artist", "image": "assets/arjit.jpg"},
-    {"Title": "Title", "Artist": "Artist", "image": "assets/arjit.jpg"},
-    {"Title": "Title", "Artist": "Artist", "image": "assets/arjit.jpg"},
-  ];
-  final imageList = [
-    "assets/asha_bosle.jpg",
-    "assets/arjit.jpg",
-  ];
-  var result;
   final fireStoreDB = FirebaseFirestore.instance;
-
-  ready() async {
-    final res = await fireStoreDB.collection("songs");
-    res.get().then((value) => result = value.docs);
-    // print("result : ${result.length}");
-  }
 
   final popSongs = [];
   final oldSongs = [];
@@ -183,6 +160,7 @@ class _HomeState extends State<Home> {
 
   final artistNames = [];
   final artistmap = {};
+
   getAllArtist() async {
     final ref = fireStoreDB.collection("songs");
     final refdata = await ref.get().then((value) => value.docs);
@@ -191,6 +169,7 @@ class _HomeState extends State<Home> {
       if (artistNames.contains(val)) {
         var mylist = artistmap[val];
         if (element.get("category").toString().trim() != "mashup" &&
+            element.get("category").toString().trim() != "podcast" &&
             element.get("category").toString().trim() != "bhajan") {
           mylist.add(element.data());
         }
@@ -211,8 +190,6 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    ready();
-
     super.initState();
   }
 
@@ -303,7 +280,7 @@ class _HomeState extends State<Home> {
                     } else if (data.connectionState == ConnectionState.done) {
                       // print(data.data);
                       final res = data.data;
-                      return BuildList(songsList: songList, res: res);
+                      return BuildList(res: res);
                     } else {
                       Toast.show("Some Error occured while fetching data",
                           duration: 2);
@@ -336,7 +313,7 @@ class _HomeState extends State<Home> {
                       );
                     } else if (data.connectionState == ConnectionState.done) {
                       final res = data.data;
-                      return BuildList(songsList: songList, res: res);
+                      return BuildList(res: res);
                     } else {
                       Toast.show("Some Error occured while fetching data",
                           duration: 2);
@@ -369,7 +346,7 @@ class _HomeState extends State<Home> {
                       );
                     } else if (data.connectionState == ConnectionState.done) {
                       final res = data.data;
-                      return BuildList(songsList: songList, res: res);
+                      return BuildList(res: res);
                     } else {
                       Toast.show("Some Error occured while fetching data",
                           duration: 2);
@@ -482,7 +459,7 @@ class _HomeState extends State<Home> {
                       );
                     } else if (data.connectionState == ConnectionState.done) {
                       final res = data.data;
-                      return BuildList(songsList: songList, res: res);
+                      return BuildList(res: res);
                     } else {
                       Toast.show("Some Error occured while fetching data",
                           duration: 2);
@@ -493,41 +470,7 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: 20,
             ),
-            // Text(
-            //   "Made for you",
-            //   style: TextStyle(
-            //       fontSize: 21,
-            //       color: Colors.white,
-            //       fontWeight: FontWeight.w700),
-            // ),
-            // SizedBox(
-            //   height: 15,
-            // ),
-            // Container(
-            //   height: h * 0.2,
-            //   width: w - 40,
-            //   child: FutureBuilder(
-            //       future: ready(),
-            //       builder:
-            //           (context, AsyncSnapshot<dynamic> data) {
-            //         if (data.connectionState ==
-            //             ConnectionState.waiting) {
-            //           return Center(
-            //             child: CircularProgressIndicator(),
-            //           );
-            //         } else if (data.connectionState ==
-            //             ConnectionState.done) {
-            //           final res = data.data;
-            //           return BuildList(
-            //               songsList: songList, res: result);
-            //         } else {
-            //           Toast.show(
-            //               "Some Error occured while fetching data",
-            //               duration: 2);
-            //           return SizedBox();
-            //         }
-            //       }),
-            // ),
+
             SizedBox(
               height: 75,
             ),

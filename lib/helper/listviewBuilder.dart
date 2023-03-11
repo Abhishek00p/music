@@ -4,9 +4,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:music/screens/album.dart';
 
 class BuildList extends StatefulWidget {
-  final List songsList;
   final res;
-  BuildList({required this.songsList, required this.res});
+  BuildList({required this.res});
 
   @override
   State<BuildList> createState() => _BuildListState();

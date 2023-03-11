@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:music/backend/database.dart';
 import 'package:music/helper/colors.dart';
 
 import '../helper/upload.dart';
@@ -87,16 +84,6 @@ class _PostNavPageState extends State<PostNavPage> {
                           SizedBox(
                             height: 10,
                           ),
-                          // Text(
-                          //   "Song_name : ${songname}",
-                          //   style: TextStyle(fontSize: 16, color: Colors.white),
-                          // ),
-                          // Text("Singer  :${Songsinger}",
-                          //     style:
-                          //         TextStyle(fontSize: 16, color: Colors.white)),
-                          // Text("Genere : ${Songgen}",
-                          //     style:
-                          //         TextStyle(fontSize: 16, color: Colors.white)),
                         ],
                       ),
                     ),
@@ -139,19 +126,6 @@ class _PostNavPageState extends State<PostNavPage> {
                           SizedBox(
                             height: 10,
                           ),
-                          // Text(
-                          //   "Podcast name : ",
-                          //   style: TextStyle(fontSize: 16, color: Colors.white),
-                          // ),
-                          // Text("Singer :",
-                          //     style:
-                          //         TextStyle(fontSize: 16, color: Colors.white)),
-                          // Text("Genere :",
-                          //     style:
-                          //         TextStyle(fontSize: 16, color: Colors.white)),
-                          // Text("Category  : Podcast",
-                          //     style:
-                          //         TextStyle(fontSize: 16, color: Colors.white))
                         ],
                       ),
                     ),
