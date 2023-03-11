@@ -1,11 +1,17 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
+import 'package:music/backend/database.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music/helper/audioPlayers.dart';
 import 'package:music/helper/colors.dart';
 import 'package:just_audio/just_audio.dart';
-
+import 'package:toast/toast.dart';
+import '../helper/download.dart';
 import 'package:share_plus/share_plus.dart';
 
 class AlbumPage extends StatefulWidget {
@@ -18,14 +24,6 @@ class AlbumPage extends StatefulWidget {
 }
 
 class _AlbumPageState extends State<AlbumPage> {
-  final FavSongList = [
-    {"Title": "Title", "Artist": "Artist", "image": "assets/arjit.jpg"},
-    {"Title": "Title", "Artist": "Artist", "image": "assets/arjit.jpg"},
-    {"Title": "Title", "Artist": "Artist", "image": "assets/arjit.jpg"},
-  ];
-
-  bool audioPlayingFromButton = false;
-  bool audioPlaying = false;
   var _val = 0.0;
   AudioPlayer _audioPlayer = AudioPlayer();
   final _getcontroller = Get.put(AllAudioPlayers());
@@ -33,12 +31,41 @@ class _AlbumPageState extends State<AlbumPage> {
   var audioDuration;
   var currentValue = 0.0;
   var positionofSlider;
-  int next = 1;
+
+  final controller = Get.put(AllFav());
+
+  Future<List> getALlFavs() async {
+    final userID = FirebaseAuth.instance.currentUser!.uid;
+    final firestoreUserDAta = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userID)
+        .collection("Fav")
+        .get();
+
+    return firestoreUserDAta.docs.toList();
+  }
+
+  bool isThisSongAddedtoFav = false;
+
+  checkIfAddedtoFav() async {
+    final allfav = await getALlFavs();
+    for (var element in allfav) {
+      final data = element.data();
+      if (data["song_name"].toString().trim() ==
+          widget.song["song_name"].toString().trim()) {
+        setState(() {
+          isThisSongAddedtoFav = true;
+        });
+      }
+    }
+  }
+
   @override
   void initState() {
-    // print("res from album, :${widget.res}");
+    print("res from album, :${widget.song}");
     positionofSlider = _audioPlayer.positionStream;
     audioDuration = _audioPlayer.durationStream;
+    checkIfAddedtoFav();
     super.initState();
   }
 
@@ -61,143 +88,6 @@ class _AlbumPageState extends State<AlbumPage> {
     final w = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: scaffColor,
-      bottomNavigationBar: audioPlayingFromButton
-          ? Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 100,
-                width: w * 0.8,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    color: Colors.black38),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Container(
-                      width: w * 0.8,
-                      height: 10,
-                      child: StreamBuilder<PositionData>(
-                        stream: _positionDataStream,
-                        builder: (context, snap) {
-                          final posData = snap.data;
-                          return ProgressBar(
-                            timeLabelTextStyle:
-                                TextStyle(color: Colors.white, fontSize: 12),
-                            thumbRadius: 8,
-                            barHeight: 4,
-                            baseBarColor: Colors.white.withOpacity(0.2),
-                            thumbColor: Colors.red,
-                            thumbGlowColor: Colors.yellow,
-                            bufferedBarColor: Colors.white,
-                            progressBarColor: Colors.orange,
-                            progress: posData?.position ?? Duration.zero,
-                            total: posData?.duration ?? Duration.zero,
-                            buffered: posData?.bufferPosition ?? Duration.zero,
-                            onSeek: _audioPlayer.seek,
-                          );
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      width: w * 0.8,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          IconButton(
-                              onPressed: () async {
-                                _audioPlayer.playerStateStream;
-                                setState(() {
-                                  next--;
-                                });
-                                var url = widget.song["song_url"];
-                                // var totalNext = await widget.song["asha bosle"].keys
-                                //     .toList()
-                                //     .length;
-                                // if (next >= 0) {
-                                //   var url = await widget.res["asha bosle"][widget
-                                //       .res["asha bosle"].keys
-                                //       .toList()[next]]["url"];
-                                //   print(
-                                //       "next song : ${widget.res["asha bosle"].keys.toList()[next]}");
-                                // print(url);
-                                _audioPlayer.setUrl(url);
-                                _audioPlayer.play();
-                                // } else {
-                                //   next = 0;
-                                // }
-
-                                setState(() {
-                                  audioPlaying = _audioPlayer.playing;
-                                  audioDuration = _audioPlayer.duration != null
-                                      ? _audioPlayer.duration!.inMilliseconds
-                                      : 0.0;
-                                });
-                              },
-                              icon: Icon(
-                                Icons.skip_previous,
-                                size: 40,
-                                color: Colors.orange,
-                              )),
-                          !audioPlaying
-                              ? IconButton(
-                                  onPressed: () async {},
-                                  icon: Icon(
-                                    Icons.play_arrow,
-                                    size: 40,
-                                    color: Colors.orange,
-                                  ))
-                              : IconButton(
-                                  onPressed: () async {
-                                    _audioPlayer.pause();
-                                    setState(() {
-                                      audioPlaying = _audioPlayer.playing;
-                                      audioDuration =
-                                          _audioPlayer.duration != null
-                                              ? _audioPlayer
-                                                  .duration!.inMilliseconds
-                                              : 0.0;
-                                    });
-                                    print("audio :$audioDuration");
-                                  },
-                                  icon: Icon(
-                                    Icons.pause,
-                                    size: 40,
-                                    color: Colors.orange,
-                                  )),
-                          IconButton(
-                              onPressed: () async {
-                                setState(() {
-                                  next++;
-                                });
-                                var url = widget.song["song_url"];
-                                _audioPlayer.setUrl(url);
-                                _audioPlayer.play();
-
-                                setState(() {
-                                  audioPlaying = _audioPlayer.playing;
-                                  audioDuration = _audioPlayer.duration != null
-                                      ? _audioPlayer.duration!.inMilliseconds
-                                      : 0.0;
-                                });
-                              },
-                              icon: Icon(
-                                Icons.skip_next,
-                                size: 40,
-                                color: Colors.orange,
-                              )),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          : SizedBox(),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -215,50 +105,90 @@ class _AlbumPageState extends State<AlbumPage> {
                 height: 15,
               ),
               Container(
-                height: h * 0.35,
-                width: w * 0.9,
-                padding: EdgeInsets.only(left: w * 0.04, right: w * 0.04),
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.network(
-                    widget.song["image_url"],
-                    fit: BoxFit.cover,
-                  ),
+                child: Column(
+                  children: [
+                    Container(
+                      height: h * 0.45,
+                      width: w * 0.9,
+                      padding: EdgeInsets.only(left: w * 0.04, right: w * 0.04),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.network(
+                          widget.song["image_url"],
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      widget.song["song_name"].toString(),
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: "Poppins",
+                          color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      widget.song["artist_name"],
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: "Poppins",
+                          color: Colors.greenAccent),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(
-                height: 10,
+                height: 30,
               ),
               Container(
                 height: 100,
                 child: Stack(
                   children: [
                     Positioned(
+                      left: 15,
+                      top: 2,
+                      child: Container(
+                        width: w * 0.8,
+                        height: 10,
+                        child: StreamBuilder<PositionData>(
+                          stream: _positionDataStream,
+                          builder: (context, snap) {
+                            final posData = snap.data;
+                            return ProgressBar(
+                              timeLabelTextStyle:
+                                  TextStyle(color: Colors.white, fontSize: 12),
+                              thumbRadius: 8,
+                              barHeight: 4,
+                              baseBarColor: Colors.white.withOpacity(0.2),
+                              thumbColor: Colors.red,
+                              thumbGlowColor: Colors.yellow,
+                              bufferedBarColor: Colors.white,
+                              progressBarColor: Colors.orange,
+                              progress: posData?.position ?? Duration.zero,
+                              total: posData?.duration ?? Duration.zero,
+                              buffered:
+                                  posData?.bufferPosition ?? Duration.zero,
+                              onSeek: _audioPlayer.seek,
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    Positioned(
                         left: 0,
+                        bottom: 2,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              widget.song["song_name"].toString(),
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "Poppins",
-                                  color: Colors.white),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              widget.song["artist_name"],
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w300,
-                                  fontFamily: "Poppins",
-                                  color: Colors.white),
-                            ),
                             SizedBox(
                               height: 15,
                             ),
@@ -267,18 +197,52 @@ class _AlbumPageState extends State<AlbumPage> {
                               child: Row(
                                 children: [
                                   IconButton(
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        !isThisSongAddedtoFav
+                                            ? await addmyFav(
+                                                widget.song["song_name"],
+                                                widget.song["artist_name"],
+                                                widget.song["image_url"],
+                                                widget.song["song_url"],
+                                                widget.song["category"])
+                                            : Toast.show(
+                                                "Already added to the fav",
+                                                textStyle: TextStyle(
+                                                    color: Colors.white,
+                                                    backgroundColor:
+                                                        Colors.black,
+                                                    fontSize: 16));
+                                      },
                                       icon: Icon(
-                                        Icons.favorite_border,
-                                        size: 22,
+                                        !isThisSongAddedtoFav
+                                            ? Icons.favorite_border
+                                            : Icons.favorite,
+                                        size: 30,
                                         color: Colors.white,
                                       )),
                                   IconButton(
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        Toast.show(
+                                          "Download started",
+                                          backgroundColor: Colors.green,
+                                          textStyle:
+                                              TextStyle(color: Colors.white),
+                                        );
+                                        final file = await DownloadSong()
+                                            .downloadSong(
+                                                widget.song["song_url"],
+                                                widget.song["song_name"]);
+                                        Toast.show(
+                                            "Song downloaded at ${file.path}",
+                                            backgroundColor: Colors.green,
+                                            textStyle:
+                                                TextStyle(color: Colors.white),
+                                            duration: 3);
+                                      },
                                       icon: Icon(
                                         Icons.downloading_outlined,
-                                        size: 22,
-                                        color: Colors.white,
+                                        size: 30,
+                                        color: Colors.greenAccent,
                                       )),
                                   IconButton(
                                       onPressed: () async {
@@ -287,8 +251,8 @@ class _AlbumPageState extends State<AlbumPage> {
                                       },
                                       icon: Icon(
                                         Icons.share,
-                                        size: 22,
-                                        color: Colors.white,
+                                        size: 30,
+                                        color: Colors.blueAccent,
                                       )),
                                 ],
                               ),
@@ -297,12 +261,10 @@ class _AlbumPageState extends State<AlbumPage> {
                         )),
                     Positioned(
                       right: 20,
-                      top: 25,
-                      child: Container(
-                        height: 50,
-                        child: Center(
-                          child: GestureDetector(
-                              onTap: () async {
+                      bottom: 0,
+                      child: GestureDetector(
+                        onTap: !_audioPlayer.playing
+                            ? () async {
                                 final lOFList =
                                     _getcontroller.audioPlayerList.length;
                                 if (lOFList > 0) {
@@ -313,9 +275,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                 }
                                 _getcontroller.audioPlayerList
                                     .add(_audioPlayer);
-                                setState(() {
-                                  audioPlayingFromButton = true;
-                                });
+
                                 var url = widget.song["song_url"];
 
                                 // var url = await widget.res["asha bosle"][widget
@@ -331,18 +291,27 @@ class _AlbumPageState extends State<AlbumPage> {
                                 }
 
                                 setState(() {
-                                  audioPlaying = _audioPlayer.playing;
                                   audioDuration = _audioPlayer.duration != null
                                       ? _audioPlayer.duration as double
                                       : 0.0;
                                 });
                                 print("audio :$audioDuration");
+                              }
+                            : () async {
+                                await _audioPlayer.pause();
+                                setState(() {});
                               },
-                              child: Image.asset(
-                                "assets/play.png",
-                                fit: BoxFit.cover,
-                              )),
-                        ),
+                        child: !_audioPlayer.playing
+                            ? Icon(
+                                Icons.play_circle_outline_outlined,
+                                size: 45,
+                                color: Colors.orange,
+                              )
+                            : Icon(
+                                Icons.pause_circle_outline,
+                                size: 45,
+                                color: Colors.orange,
+                              ),
                       ),
                     )
                   ],
@@ -350,21 +319,6 @@ class _AlbumPageState extends State<AlbumPage> {
               ),
               SizedBox(
                 height: 10,
-              ),
-              Text(
-                "Your Favourite",
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: h * 0.2,
-                width: w * 0.9, color: Colors.amber,
-                // child: BuildList(songsList: FavSongList, res: widget.res),
               ),
             ],
           ),
@@ -380,4 +334,23 @@ class PositionData {
   final Duration duration;
 
   PositionData(this.position, this.bufferPosition, this.duration);
+}
+
+addmyFav(songName, artist, albumimageurl, url, categ) async {
+  final User user = FirebaseAuth.instance.currentUser!;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final fireUserDocREf = firestore.collection("users").doc(user.uid);
+  final fireUserFavRef = fireUserDocREf.collection("Fav");
+  await fireUserFavRef.doc().set({
+    "song_name": songName,
+    "artist_name": artist,
+    "category": categ,
+    "image_url": albumimageurl,
+    "song_url": url,
+  });
+
+  Toast.show("Song added to your FavSongs",
+      textStyle: TextStyle(color: Colors.black, fontSize: 16),
+      duration: 2,
+      backgroundColor: Colors.white);
 }

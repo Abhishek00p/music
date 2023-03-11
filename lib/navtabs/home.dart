@@ -4,12 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:music/helper/colors.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:music/backend/database.dart';
 import 'package:music/navtabs/fav.dart';
 import 'package:music/helper/tabs.dart';
 import 'package:music/helper/upload.dart';
+import 'package:music/screens/playlist.dart';
 import 'package:toast/toast.dart';
 
 import '../backend/firebaseDatabase.dart';
@@ -41,11 +43,6 @@ class _NavPagesState extends State<NavPages> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-              // gradient: LinearGradient(
-              //   begin: Alignment.bottomCenter,
-              //   end: Alignment.topCenter,
-              //   colors: [Colors.black26, Colors.transparent],
-              // ),
               color: Colors.transparent,
             ),
             child: Container(
@@ -172,17 +169,32 @@ class _HomeState extends State<Home> {
     return lovesong;
   }
 
+  final artistNames = [];
+  final artistmap = {};
   getAllArtist() async {
     final ref = fireStoreDB.collection("songs");
     final refdata = await ref.get().then((value) => value.docs);
     for (var element in refdata) {
-      if (element.get("artist_name").toString().toLowerCase() ==
-          "arijit singh") {
-        artist.add(element.data());
+      var val = element.get("artist_name").toString().trim();
+      if (artistNames.contains(val)) {
+        var mylist = artistmap[val];
+        if (element.get("category").toString().trim() != "mashup" &&
+            element.get("category").toString().trim() != "bhajan") {
+          mylist.add(element.data());
+        }
+      } else {
+        if (element.get("category").toString().trim() != "mashup" &&
+            element.get("category").toString().trim() != "bhajan") {
+          artistNames.add(val);
+          artistmap[val] = [];
+
+          List mylist = artistmap[val];
+          mylist.add(element.data());
+        }
       }
     }
-    print("artist :$artist");
-    return artist;
+    // print("artistmap :$artistmap");
+    return artistmap;
   }
 
   @override
@@ -324,7 +336,7 @@ class _HomeState extends State<Home> {
               height: 20,
             ),
             Text(
-              "Arijit Singh",
+              "Top Artist",
               style: TextStyle(
                   fontSize: 21,
                   color: Colors.white,
@@ -345,8 +357,54 @@ class _HomeState extends State<Home> {
                       );
                     } else if (data.connectionState == ConnectionState.done) {
                       final res = data.data;
-                      print("res : artist :$res");
-                      return BuildList(songsList: songList, res: res);
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: artistNames.length,
+                        itemBuilder: (context, index) {
+                          // print(" playlist : Res = ${res[artistNames[index]]}");
+                          return Padding(
+                            padding: EdgeInsets.only(right: 12),
+                            child: GestureDetector(
+                              onTap: () {
+                                print(
+                                    "going to playlist : Res = ${res[artistNames[index]]}");
+                                Get.to(() => PlayListPlayer(
+                                      res: res[artistNames[index]],
+                                      ArtistName: artistNames[index],
+                                    ));
+                              },
+                              child: Container(
+                                height: h * 0.2,
+                                width: w * 0.35,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: h * 0.16,
+                                      width: w * 0.35,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: Image.asset(
+                                          "assets/arjit.jpg",
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      artistNames[index],
+                                      style: TextStyle(
+                                          fontSize: 14, color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
                     } else {
                       Toast.show("Some Error occured while fetching data",
                           duration: 2);

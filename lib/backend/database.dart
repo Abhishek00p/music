@@ -97,6 +97,7 @@ Future<void> signInWithGoogle() async {
     final UserCredential userCredential =
         await _auth.signInWithCredential(credential);
     final User user = userCredential.user!;
+
     Get.to(() => NavPages());
   } catch (e) {
     Toast.show("$e");

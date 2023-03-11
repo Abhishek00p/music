@@ -18,6 +18,8 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   void _handleLogin() async {
+    CircularProgressIndicator();
+
     if (_formKey.currentState!.validate()) {
       final val = await signIn(_emailController.text, _passwordController.text);
       val ? Get.to(() => NavPages()) : null;
@@ -177,6 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       GestureDetector(
                         onTap: () {
+                          CircularProgressIndicator();
                           signInWithGoogle();
                         },
                         child: Image.asset(
