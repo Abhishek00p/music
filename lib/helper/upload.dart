@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,7 +10,13 @@ import 'package:path/path.dart';
 
 import 'package:file_picker/file_picker.dart';
 
+import 'colors.dart';
+
 class Upload extends StatefulWidget {
+  final bool isSong;
+
+  const Upload({super.key, required this.isSong});
+
   @override
   _UploadState createState() => _UploadState();
 }
@@ -28,6 +36,8 @@ class _UploadState extends State<Upload> {
   var image_down_url, song_down_url;
   final firestoreinstance = FirebaseFirestore.instance;
   final _imgpicker = ImagePicker();
+  bool imageSelected = false;
+  bool songSelected = false;
   void selectimage() async {
     image =
         File((await _imgpicker.pickImage(source: ImageSource.gallery))!.path);
@@ -36,6 +46,7 @@ class _UploadState extends State<Upload> {
       image = image;
       imagepath = basename(image.path);
       uploadimagefile(image.readAsBytesSync(), imagepath);
+      imageSelected = true;
     });
   }
 
@@ -55,6 +66,7 @@ class _UploadState extends State<Upload> {
       song = song;
       songpath = basename(song.path);
       uploadsongfile(song.readAsBytesSync(), songpath);
+      songSelected = true;
     });
   }
 
@@ -66,8 +78,23 @@ class _UploadState extends State<Upload> {
     return song_down_url.toString();
   }
 
-  finalupload(context) {
+  fileuploadTouser(String collectionName, data, context) async {
+    final userID = FirebaseAuth.instance.currentUser!.uid;
+    final docu = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userID)
+        .collection(collectionName)
+        .doc();
+    docu.set(data).whenComplete(() => showDialog(
+          context: context,
+          builder: (context) =>
+              _onTapButton(context, "Files Uploaded Successfully :)"),
+        ));
+  }
+
+  finalupload(context) async {
     if (songname.text != '' &&
+        artistname.text != '' &&
         song_down_url != null &&
         image_down_url != null) {
       print(songname.text);
@@ -80,11 +107,12 @@ class _UploadState extends State<Upload> {
         "artist_name": artistname.text,
         "song_url": song_down_url.toString(),
         "image_url": image_down_url.toString(),
-        "category": categoryController.text.toString()
+        "genere": categoryController.text.toString()
       };
-
+      await fileuploadTouser(
+          widget.isSong ? "Music" : "Podcast", data, context);
       firestoreinstance
-          .collection("songs")
+          .collection(widget.isSong ? "UsersSongs" : "userPodcast")
           .doc()
           .set(data)
           .whenComplete(() => showDialog(
@@ -108,65 +136,189 @@ class _UploadState extends State<Upload> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 50,
-          ),
-          TextButton(
-            onPressed: () => selectimage(),
-            child: Container(
-                height: 30,
-                width: 80,
-                decoration: BoxDecoration(border: Border.all()),
-                child: Text("Select Image")),
-          ),
-          TextButton(
-            onPressed: () => selectsong(),
-            child: Container(
-                height: 30,
-                width: 80,
-                decoration: BoxDecoration(border: Border.all()),
-                child: Text("Select Song")),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            child: TextField(
-              controller: songname,
-              decoration: InputDecoration(
-                hintText: "Enter song name",
+      backgroundColor: Colors.white24,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Container(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: GestureDetector(
+                      onTap: () => Navigator.pop(context, {
+                        "title": songname.text,
+                        "singer": artistname.text,
+                        "gen": categoryController.text,
+                        "img": image,
+                        "isSong": widget.isSong
+                      }),
+                      child: Container(
+                        height: 30,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.blue),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                bottomLeft: Radius.circular(20))),
+                        width: 80,
+                        child: Center(
+                          child: Text(
+                            "Go back",
+                            style: TextStyle(fontSize: 22),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width - 40,
+                        child: Column(
+                          children: [
+                            TextField(
+                              controller: songname,
+                              decoration: InputDecoration(
+                                  fillColor: Colors.orangeAccent,
+                                  filled: true,
+                                  hintStyle: TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                  label: Text(
+                                    "Title",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.black),
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            TextField(
+                              controller: artistname,
+                              decoration: InputDecoration(
+                                fillColor: Colors.orangeAccent,
+                                filled: true,
+                                hintStyle: TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                                label: Text(
+                                  "Artist",
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.black),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            TextField(
+                              controller: categoryController,
+                              decoration: InputDecoration(
+                                fillColor: Colors.orangeAccent,
+                                filled: true,
+                                hintStyle: TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                                label: Text(
+                                  "Genere",
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  imageSelected
+                      ? Container(
+                          height: 100,
+                          width: 200,
+                          child: Image.file(
+                            image,
+                            fit: BoxFit.fill,
+                          ),
+                        )
+                      : Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white)),
+                          height: 100,
+                          width: 200,
+                          child: Center(
+                            child: Text(
+                              "Image",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextButton(
+                    onPressed: () => selectimage(),
+                    child: Container(
+                        height: 30,
+                        width: 80,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(color: Colors.deepOrange),
+                            color: Colors.white),
+                        child: Center(
+                            child: Text(
+                          "Select Image",
+                        ))),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  songSelected
+                      ? Text(
+                          "${songpath}",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        )
+                      : Text(
+                          "example.mp3",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
+                  TextButton(
+                    onPressed: () => selectsong(),
+                    child: Container(
+                        height: 30,
+                        width: 80,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(color: Colors.deepOrange),
+                            color: Colors.white),
+                        child: Center(child: Text("Select Song"))),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextButton(
+                    onPressed: () => finalupload(context),
+                    child: Container(
+                        height: 50,
+                        width: 170,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40),
+                            border: Border.all(color: Colors.deepOrange),
+                            color: Colors.white),
+                        child: Center(child: Text("Upload"))),
+                  ),
+                ],
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            child: TextField(
-              controller: artistname,
-              decoration: InputDecoration(
-                hintText: "Enter artist name",
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            child: TextField(
-              controller: categoryController,
-              decoration: InputDecoration(
-                hintText: "Enter Category name",
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () => finalupload(context),
-            child: Container(
-                height: 30,
-                width: 80,
-                decoration: BoxDecoration(border: Border.all()),
-                child: Text("Upload")),
-          ),
-        ],
-      )),
+        ),
+      ),
     );
   }
 }
