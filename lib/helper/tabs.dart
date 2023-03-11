@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:music/helper/colors.dart';
+import '../screens/search.dart';
 import '../tabs/podcast.dart';
 import '../navtabs/home.dart';
 import '../tabs/livestream.dart';
@@ -55,8 +57,10 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
                     ),
                     GestureDetector(
                         onTap: () async {
-                          // await uploadAndStore();
-                          // await FirebaseDB().ReadDataFromRealTimeDB("name");
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SearchPage()));
                         },
                         child: Icon(
                           Icons.search,

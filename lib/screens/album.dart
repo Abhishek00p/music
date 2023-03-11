@@ -270,7 +270,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                 if (lOFList > 0) {
                                   for (var element
                                       in _getcontroller.audioPlayerList) {
-                                    element.stop();
+                                    await element.stop();
                                   }
                                 }
                                 _getcontroller.audioPlayerList
@@ -282,7 +282,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                 //     .res["asha bosle"].keys
                                 //     .toList()[next]]["url"];
                                 // print(url);
-                                _audioPlayer.setUrl(url);
+                                await _audioPlayer.setUrl(url);
                                 if (_audioPlayer.playing) {
                                   _audioPlayer.pause();
                                   setState(() {});
@@ -292,7 +292,7 @@ class _AlbumPageState extends State<AlbumPage> {
 
                                 setState(() {
                                   audioDuration = _audioPlayer.duration != null
-                                      ? _audioPlayer.duration as double
+                                      ? _audioPlayer.duration
                                       : 0.0;
                                 });
                                 print("audio :$audioDuration");

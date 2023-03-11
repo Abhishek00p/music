@@ -151,13 +151,9 @@ class _UploadState extends State<Upload> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: GestureDetector(
-                      onTap: () => Navigator.pop(context, {
-                        "title": songname.text,
-                        "singer": artistname.text,
-                        "gen": categoryController.text,
-                        "img": image,
-                        "isSong": widget.isSong
-                      }),
+                      onTap: () => Navigator.pop(
+                        context,
+                      ),
                       child: Container(
                         height: 30,
                         decoration: BoxDecoration(

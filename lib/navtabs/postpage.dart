@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:music/backend/database.dart';
+import 'package:music/helper/colors.dart';
 
 import '../helper/upload.dart';
 
@@ -11,40 +12,6 @@ class PostNavPage extends StatefulWidget {
 }
 
 class _PostNavPageState extends State<PostNavPage> {
-  File? songImage;
-  File? podcastImage;
-
-  String songname = "";
-  String Songsinger = "";
-  String Songgen = "";
-
-  String podName = "";
-  String podsinger = "";
-  String podGen = "";
-
-  bool songUploaded = false;
-  bool podUploaded = false;
-
-  assignEverything(res) {
-    if (res["isSong"]) {
-      setState(() {
-        songname = res["title"];
-        songImage = res["img"];
-        Songgen = res["gen"];
-        Songsinger = res["singer"];
-        songUploaded = true;
-      });
-    } else {
-      setState(() {
-        podGen = res["gen"];
-        podName = res["title"];
-        podsinger = res["singer"];
-        podcastImage = res["img"];
-        podUploaded = true;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
@@ -53,6 +20,7 @@ class _PostNavPageState extends State<PostNavPage> {
     return Container(
         height: h,
         width: w,
+        color: whitealpha,
         child: Column(
           children: [
             SizedBox(
@@ -101,26 +69,19 @@ class _PostNavPageState extends State<PostNavPage> {
                                 border:
                                     Border.all(color: Colors.deepOrangeAccent)),
                             child: Center(
-                              child: songUploaded
-                                  ? Image.file(
-                                      songImage!,
-                                      fit: BoxFit.fill,
-                                    )
-                                  : IconButton(
-                                      onPressed: () async {
-                                        final res = await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Upload(isSong: true)));
-                                        res ?? await assignEverything(res);
-                                        setState(() {});
-                                      },
-                                      icon: Icon(
-                                        Icons.publish_rounded,
-                                        size: 50,
-                                        color: Colors.white,
-                                      )),
+                              child: IconButton(
+                                  onPressed: () async {
+                                    final res = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Upload(isSong: true)));
+                                  },
+                                  icon: Icon(
+                                    Icons.publish_rounded,
+                                    size: 50,
+                                    color: Colors.white,
+                                  )),
                             ),
                           ),
                           SizedBox(
@@ -158,30 +119,22 @@ class _PostNavPageState extends State<PostNavPage> {
                             height: h * 0.2,
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.green[400]!)),
-                            child: podUploaded
-                                ? Image.file(
-                                    podcastImage!,
-                                    fit: BoxFit.fill,
-                                  )
-                                : Center(
-                                    child: IconButton(
-                                        onPressed: () async {
-                                          final res = await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => Upload(
-                                                        isSong: false,
-                                                      )));
-
-                                          res ?? await assignEverything(res);
-                                          setState(() {});
-                                        },
-                                        icon: Icon(
-                                          Icons.publish_rounded,
-                                          size: 50,
-                                          color: Colors.white,
-                                        )),
-                                  ),
+                            child: Center(
+                              child: IconButton(
+                                  onPressed: () async {
+                                    final res = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Upload(
+                                                  isSong: false,
+                                                )));
+                                  },
+                                  icon: Icon(
+                                    Icons.publish_rounded,
+                                    size: 50,
+                                    color: Colors.white,
+                                  )),
+                            ),
                           ),
                           SizedBox(
                             height: 10,

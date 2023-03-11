@@ -32,6 +32,7 @@ class _NavPagesState extends State<NavPages> {
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
+
     return Scaffold(
         backgroundColor: whitealpha,
         body: SafeArea(child: pages[navBarIndex]),
@@ -167,6 +168,17 @@ class _HomeState extends State<Home> {
     }
     // print(popSongs.length);
     return lovesong;
+  }
+
+  getUserSongs() async {
+    List songs = [];
+    final ref = fireStoreDB.collection("UsersSongs");
+    final refdata = await ref.get().then((value) => value.docs);
+    for (var element in refdata) {
+      songs.add(element.data());
+    }
+    // print(popSongs.length);
+    return songs;
   }
 
   final artistNames = [];
@@ -317,6 +329,39 @@ class _HomeState extends State<Home> {
               width: w - 40,
               child: FutureBuilder(
                   future: getOldSongs(),
+                  builder: (context, AsyncSnapshot<dynamic> data) {
+                    if (data.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (data.connectionState == ConnectionState.done) {
+                      final res = data.data;
+                      return BuildList(songsList: songList, res: res);
+                    } else {
+                      Toast.show("Some Error occured while fetching data",
+                          duration: 2);
+                      return SizedBox();
+                    }
+                  }),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              "Recently Added",
+              style: TextStyle(
+                  fontSize: 21,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Container(
+              height: h * 0.2,
+              width: w - 40,
+              child: FutureBuilder(
+                  future: getUserSongs(),
                   builder: (context, AsyncSnapshot<dynamic> data) {
                     if (data.connectionState == ConnectionState.waiting) {
                       return Center(
