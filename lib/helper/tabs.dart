@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:music/helper/colors.dart';
 import '../screens/search.dart';
 import '../tabs/podcast.dart';
 import '../navtabs/home.dart';
-import '../tabs/livestream.dart';
 
 class MyWidget extends StatefulWidget {
   const MyWidget({Key? key}) : super(key: key);
@@ -17,9 +18,13 @@ class MyWidget extends StatefulWidget {
 class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
   late TabController _tabController;
 
+  late String username;
+
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
+    username = FirebaseAuth.instance.currentUser!.displayName.toString();
+
     super.initState();
   }
 
@@ -28,7 +33,7 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     return DefaultTabController(
-      length: 3, // number of tabs
+      length: 2, // number of tabs
       child: Scaffold(
         backgroundColor: whitealpha,
         body: Column(
@@ -42,6 +47,22 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    CircleAvatar(
+                      radius: 16,
+                      backgroundColor: Colors.white,
+                      child: CircleAvatar(
+                        radius: 14,
+                        child: Center(
+                          child: Text(
+                            username[0].capitalize!,
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
                     Text(
                       "Discover",
                       style: TextStyle(fontSize: 24, color: Colors.white),
@@ -113,28 +134,6 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _tabController.index = 2;
-                      });
-                    },
-                    child: Container(
-                      height: 50,
-                      width: 100,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: _tabController.index == 2
-                              ? Colors.deepOrange
-                              : Colors.white.withAlpha(20)),
-                      child: Center(
-                        child: Text(
-                          "LiveStream",
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -148,7 +147,6 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
                   // Widgets for the first tab
                   Home(),
                   PodcastPage(),
-                  LiveStreamPage()
                 ],
               ),
             ),

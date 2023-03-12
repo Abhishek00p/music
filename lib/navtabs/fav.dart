@@ -101,27 +101,30 @@ class _FavSongsState extends State<FavSongs> {
                                           ),
                                         ),
                                       ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text(
-                                            snap.data![index]["song_name"]
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          ),
-                                          Text(
-                                            snap.data![index]["artist_name"]
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.white),
-                                          ),
-                                        ],
+                                      Container(
+                                        width: w * 0.3,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              snap.data![index]["song_name"]
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colors.white),
+                                            ),
+                                            Text(
+                                              snap.data![index]["artist_name"]
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colors.white),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       GestureDetector(
                                         onTap: () => Navigator.push(

@@ -98,7 +98,7 @@ class _PostNavPageState extends State<PostNavPage> {
                       height: 20,
                     ),
                     Container(
-                      height: h * 0.3,
+                      height: h * 0.25,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -132,7 +132,12 @@ class _PostNavPageState extends State<PostNavPage> {
                   ],
                 ),
               ),
-            )
+            ),
+            Divider(
+              endIndent: 60,
+              thickness: 1.7,
+              color: Colors.white,
+            ),
           ],
         ));
   }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
@@ -30,6 +31,10 @@ Future signUp(String email, String password) async {
       password: password,
     );
     User user = userCredential.user!;
+    Toast.show("user Register succesfully",
+        duration: 2,
+        backgroundColor: Colors.white,
+        textStyle: TextStyle(color: Colors.black));
     return {"val": true, "user": user};
     // Do something with the user object
   } on FirebaseAuthException catch (e) {
@@ -53,6 +58,10 @@ Future signIn(String email, String password) async {
       password: password,
     );
     User user = userCredential.user!;
+    Toast.show("Welcome",
+        duration: 2,
+        backgroundColor: Colors.white,
+        textStyle: TextStyle(color: Colors.black));
     return true;
     // Do something with the user object
   } on FirebaseAuthException catch (e) {

@@ -83,7 +83,9 @@ class _SearchPageState extends State<SearchPage> {
                           borderRadius: BorderRadius.circular(20)),
                       child: TextFormField(
                         controller: searchController,
-                        decoration: InputDecoration(),
+                        decoration: InputDecoration(
+                            hintText: "Search here",
+                            hintStyle: TextStyle(fontSize: 18)),
                         onChanged: (val) async {
                           var res = await getSearchResult(val);
                           setState(() {
