@@ -49,186 +49,190 @@ class _PodcastPageState extends State<PodcastPage> {
       width: w,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 15,
-            ),
-            Text(
-              "Recently Released Podcast",
-              style: TextStyle(fontSize: 22, color: Colors.white),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            FutureBuilder(
-              future: getUserPodcast(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
-                }
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return Container(
-                    height: h * 0.26,
-                    width: w,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        physics: BouncingScrollPhysics(),
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, ind) {
-                          return Padding(
-                            padding: EdgeInsets.only(right: 15),
-                            child: GestureDetector(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AlbumPage(
-                                          song: snapshot.data![ind]))),
-                              child: Container(
-                                height: h * 0.25,
-                                width: w - 130,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Container(
-                                      height: h * 0.2,
-                                      width: w - 70,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: Image.network(
-                                          snapshot.data![ind]["image_url"],
-                                          fit: BoxFit.fill,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 15,
+              ),
+              Text(
+                "Recently Released Podcast",
+                style: TextStyle(fontSize: 22, color: Colors.white),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              FutureBuilder(
+                future: getUserPodcast(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  }
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return Container(
+                      height: h * 0.27,
+                      width: w,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          physics: BouncingScrollPhysics(),
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, ind) {
+                            return Padding(
+                              padding: EdgeInsets.only(right: 15),
+                              child: GestureDetector(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AlbumPage(
+                                            song: snapshot.data![ind]))),
+                                child: Container(
+                                  height: h * 0.245,
+                                  width: w - 130,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Container(
+                                        height: h * 0.2,
+                                        width: w - 70,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: Image.network(
+                                            snapshot.data![ind]["image_url"],
+                                            fit: BoxFit.fill,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Text(
-                                      snapshot.data![ind]["song_name"],
-                                      style: TextStyle(
-                                          fontSize: snapshot.data![ind]
-                                                          ["song_name"]
-                                                      .toString()
-                                                      .length >
-                                                  20
-                                              ? 14
-                                              : 18,
-                                          color: Colors.white),
-                                    ),
-                                    Text(
-                                      snapshot.data![ind]["artist_name"],
-                                      style: TextStyle(
-                                          fontSize: snapshot.data![ind]
-                                                          ["song_name"]
-                                                      .toString()
-                                                      .length >
-                                                  20
-                                              ? 14
-                                              : 18,
-                                          color: Colors.white),
-                                    ),
-                                  ],
+                                      Text(
+                                        snapshot.data![ind]["song_name"],
+                                        style: TextStyle(
+                                            fontSize: snapshot.data![ind]
+                                                            ["song_name"]
+                                                        .toString()
+                                                        .length >
+                                                    20
+                                                ? 14
+                                                : 18,
+                                            color: Colors.white),
+                                      ),
+                                      Text(
+                                        snapshot.data![ind]["artist_name"],
+                                        style: TextStyle(
+                                            fontSize: snapshot.data![ind]
+                                                            ["song_name"]
+                                                        .toString()
+                                                        .length >
+                                                    20
+                                                ? 14
+                                                : 18,
+                                            color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }),
-                  );
-                } else {
-                  return SizedBox();
-                }
-              },
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Text(
-              "Recommended",
-              style: TextStyle(fontSize: 22, color: Colors.white),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            FutureBuilder(
-              future: getPodcast(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
-                }
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return Container(
-                    height: h * 0.26,
-                    width: w,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        physics: BouncingScrollPhysics(),
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, ind) {
-                          return Padding(
-                            padding: EdgeInsets.only(right: 15),
-                            child: GestureDetector(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AlbumPage(
-                                          song: snapshot.data![ind]))),
-                              child: Container(
-                                height: h * 0.25,
-                                width: w - 130,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Container(
-                                      height: h * 0.2,
-                                      width: w - 70,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: Image.network(
-                                          snapshot.data![ind]["image_url"],
-                                          fit: BoxFit.fill,
+                            );
+                          }),
+                    );
+                  } else {
+                    return SizedBox();
+                  }
+                },
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Text(
+                "Recommended",
+                style: TextStyle(fontSize: 22, color: Colors.white),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              FutureBuilder(
+                future: getPodcast(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  }
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return Container(
+                      height: h * 0.27,
+                      width: w,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          physics: BouncingScrollPhysics(),
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, ind) {
+                            return Padding(
+                              padding: EdgeInsets.only(right: 15),
+                              child: GestureDetector(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AlbumPage(
+                                            song: snapshot.data![ind]))),
+                                child: Container(
+                                  height: h * 0.24,
+                                  width: w - 130,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Container(
+                                        height: h * 0.2,
+                                        width: w - 70,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: Image.network(
+                                            snapshot.data![ind]["image_url"],
+                                            fit: BoxFit.fill,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Text(
-                                      snapshot.data![ind]["song_name"],
-                                      style: TextStyle(
-                                          fontSize: snapshot.data![ind]
-                                                          ["song_name"]
-                                                      .toString()
-                                                      .length >
-                                                  20
-                                              ? 12
-                                              : 18,
-                                          color: Colors.white),
-                                    ),
-                                    Text(
-                                      snapshot.data![ind]["artist_name"],
-                                      style: TextStyle(
-                                          fontSize: snapshot.data![ind]
-                                                          ["artist_name"]
-                                                      .toString()
-                                                      .length >
-                                                  20
-                                              ? 12
-                                              : 18,
-                                          color: Colors.white),
-                                    ),
-                                  ],
+                                      Text(
+                                        snapshot.data![ind]["song_name"],
+                                        style: TextStyle(
+                                            fontSize: snapshot.data![ind]
+                                                            ["song_name"]
+                                                        .toString()
+                                                        .length >
+                                                    20
+                                                ? 12
+                                                : 18,
+                                            color: Colors.white),
+                                      ),
+                                      Text(
+                                        snapshot.data![ind]["artist_name"],
+                                        style: TextStyle(
+                                            fontSize: snapshot.data![ind]
+                                                            ["artist_name"]
+                                                        .toString()
+                                                        .length >
+                                                    20
+                                                ? 12
+                                                : 18,
+                                            color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }),
-                  );
-                } else {
-                  return SizedBox();
-                }
-              },
-            )
-          ],
+                            );
+                          }),
+                    );
+                  } else {
+                    return SizedBox();
+                  }
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

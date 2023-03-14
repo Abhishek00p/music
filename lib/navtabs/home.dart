@@ -175,6 +175,7 @@ class _HomeState extends State<Home> {
         }
       } else {
         if (element.get("category").toString().trim() != "mashup" &&
+            element.get("category").toString().trim() != "podcast" &&
             element.get("category").toString().trim() != "bhajan") {
           artistNames.add(val);
           artistmap[val] = [];
@@ -199,7 +200,7 @@ class _HomeState extends State<Home> {
     final w = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       child: Container(
-        height: h * 0.85,
+        height: h * 0.8,
         padding: EdgeInsets.only(left: 20, right: 20),
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
