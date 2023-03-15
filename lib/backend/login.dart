@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music/helper/colors.dart';
@@ -17,8 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _phone = TextEditingController();
-  final _otp = TextEditingController();
+
   void _handleLogin() async {
     CircularProgressIndicator();
 
@@ -32,7 +32,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
-
     return Scaffold(
       backgroundColor: Colors.white.withAlpha(40),
       body: SafeArea(
@@ -43,14 +42,140 @@ class _LoginPageState extends State<LoginPage> {
             padding: EdgeInsets.all(20),
             child: Stack(children: [
               Positioned(
-                  top: h * 0.02,
-                  left: w * 0.3,
-                  child: Text(
-                    "Login",
-                    style: TextStyle(fontSize: 34, color: Colors.white),
+                top: 15,
+                child: Container(
+                    height: 60,
+                    padding: EdgeInsets.all(2),
+                    width: w - 50,
+                    decoration: BoxDecoration(
+                      border: Border.all(),
+                      color: whitealpha,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Login",
+                        style: TextStyle(color: Colors.white, fontSize: 22),
+                      ),
+                    )),
+              ),
+              Positioned(
+                  top: h * 0.3,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: w - 40,
+                          child: TextFormField(
+                            enabled: true,
+                            controller: _emailController,
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            decoration: InputDecoration(
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.red)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.brown[400]!)),
+                              fillColor: Colors.white,
+                              labelStyle: TextStyle(color: Colors.white),
+                              errorStyle:
+                                  TextStyle(fontSize: 16, color: Colors.amber),
+                              labelText: 'Email',
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your email address';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Container(
+                          width: w - 40,
+                          child: TextFormField(
+                            controller: _passwordController,
+                            obscureText: true,
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            decoration: InputDecoration(
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.red)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.brown[400]!)),
+                              fillColor: Colors.white,
+                              labelStyle: TextStyle(color: Colors.white),
+                              errorStyle:
+                                  TextStyle(fontSize: 16, color: Colors.amber),
+                              labelText: 'Password',
+                              border: OutlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your password';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        SizedBox(height: 35),
+                        Row(
+                          children: [
+                            Container(
+                                height: 50,
+                                width: 100,
+                                child: Card(
+                                  child: TextButton(
+                                    onPressed: _handleLogin,
+                                    child: Text(
+                                      'Login',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color:
+                                              Color.fromARGB(255, 82, 68, 68)),
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                      ],
+                    ),
                   )),
               Positioned(
-                  top: h * 0.08,
+                  bottom: h * 0.2,
+                  left: w * 0.1,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            "Don't have an Account?",
+                            style: TextStyle(fontSize: 17, color: Colors.white),
+                          ),
+                          TextButton(
+                              onPressed: () => Get.to(() => SignupPage()),
+                              child: Text(
+                                "Register",
+                                style:
+                                    TextStyle(fontSize: 17, color: Colors.blue),
+                              ))
+                        ],
+                      ),
+                    ],
+                  )),
+              Positioned(
+                  top: h * 0.15,
                   left: 0,
                   child: Container(
                     height: 50,
@@ -68,227 +193,23 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   )),
               Positioned(
-                top: h * 0.15,
-                child: Container(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: w - 40,
-                        child: TextFormField(
-                          enabled: true,
-                          controller: _phone,
-                          keyboardType: TextInputType.number,
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                            errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.red)),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.brown[400]!)),
-                            fillColor: Colors.white,
-                            labelStyle: TextStyle(color: Colors.white),
-                            errorStyle:
-                                TextStyle(fontSize: 16, color: Colors.amber),
-                            labelText: 'numer',
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
+                  bottom: 20,
+                  right: 0,
+                  child: Container(
+                    height: 50,
+                    width: w * 0.7,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            indent: 60,
+                            thickness: 1.7,
+                            color: Colors.white,
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your number';
-                            }
-                            return null;
-                          },
                         ),
-                      ),
-                      SizedBox(height: 16),
-                      Container(
-                        width: w - 40,
-                        child: TextFormField(
-                          controller: _otp,
-                          keyboardType: TextInputType.number,
-                          obscureText: true,
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                            errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.red)),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.brown[400]!)),
-                            fillColor: Colors.white,
-                            labelStyle: TextStyle(color: Colors.white),
-                            errorStyle:
-                                TextStyle(fontSize: 16, color: Colors.amber),
-                            labelText: 'OTP',
-                            border: OutlineInputBorder(),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your OTP';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                top: h * 0.32,
-                right: 0,
-                child: Container(
-                  height: 50,
-                  width: w * 0.7,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          indent: 60,
-                          thickness: 1.7,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                top: h * 0.38,
-                left: w * 0.3,
-                child: Container(
-                  height: 40,
-                  width: 120,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white),
-                  child: GestureDetector(
-                    onTap: () async {
-                      await verifyPhoneNumber(_phone.text);
-                    },
-                    child: Center(
-                      child: Text(
-                        "Login",
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Color.fromARGB(255, 82, 68, 68)),
-                      ),
+                      ],
                     ),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: h * 0.46,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: w - 40,
-                        child: TextFormField(
-                          enabled: true,
-                          controller: _emailController,
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                            errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.red)),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.brown[400]!)),
-                            fillColor: Colors.white,
-                            labelStyle: TextStyle(color: Colors.white),
-                            errorStyle:
-                                TextStyle(fontSize: 16, color: Colors.amber),
-                            labelText: 'Email',
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your email address';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      Container(
-                        width: w - 40,
-                        child: TextFormField(
-                          controller: _passwordController,
-                          obscureText: true,
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                            errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.red)),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.brown[400]!)),
-                            fillColor: Colors.white,
-                            labelStyle: TextStyle(color: Colors.white),
-                            errorStyle:
-                                TextStyle(fontSize: 16, color: Colors.amber),
-                            labelText: 'Password',
-                            border: OutlineInputBorder(),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      SizedBox(height: 40),
-                      Container(
-                          height: 40,
-                          width: 120,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.white),
-                            child: GestureDetector(
-                              onTap: _handleLogin,
-                              child: Center(
-                                child: Text(
-                                  'Login',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      color: Color.fromARGB(255, 82, 68, 68)),
-                                ),
-                              ),
-                            ),
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                  bottom: h * 0.15,
-                  left: w * 0.1,
-                  child: Row(
-                    children: [
-                      Text(
-                        "Don't have an Account?",
-                        style: TextStyle(fontSize: 17, color: Colors.white),
-                      ),
-                      TextButton(
-                          onPressed: () => Get.to(() => SignupPage()),
-                          child: Text(
-                            "Register",
-                            style: TextStyle(fontSize: 17, color: Colors.blue),
-                          ))
-                    ],
-                  )),
+                  ))
             ]),
           ),
         ),
