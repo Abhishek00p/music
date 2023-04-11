@@ -168,14 +168,21 @@ class _HomeState extends State<Home> {
       var val = element.get("artist_name").toString().trim();
       if (artistNames.contains(val)) {
         var mylist = artistmap[val];
-        if (element.get("category").toString().trim() != "mashup" &&
-            element.get("category").toString().trim() != "podcast" &&
-            element.get("category").toString().trim() != "bhajan") {
+        if (element.get("category").toString().toLowerCase().trim() !=
+                "mashup" &&
+            element.get("category").toString().toLowerCase().trim() !=
+                "podcast" &&
+            element.get("category").toString().toLowerCase().trim() !=
+                "bhajan") {
           mylist.add(element.data());
         }
       } else {
-        if (element.get("category").toString().trim() != "mashup" &&
-            element.get("category").toString().trim() != "bhajan") {
+        if (element.get("category").toString().toLowerCase().trim() !=
+                "mashup" &&
+            element.get("category").toString().toLowerCase().trim() !=
+                "podcast" &&
+            element.get("category").toString().toLowerCase().trim() !=
+                "bhajan") {
           artistNames.add(val);
           artistmap[val] = [];
 
@@ -186,6 +193,49 @@ class _HomeState extends State<Home> {
     }
     // print("artistmap :$artistmap");
     return artistmap;
+  }
+
+  getBhajans() async {
+    List bhajans = [];
+    final ref = fireStoreDB.collection("songs");
+    final refdata = await ref.get().then((value) => value.docs);
+    for (var element in refdata) {
+      if (element.get("category").toString().contains("bhajan")) {
+        bhajans.add(element.data());
+      }
+    }
+    // print(popSongs.length);
+    return bhajans;
+  }
+
+  final nameAndImage = [
+    {"name": "asha", "image": "assets/artist/asha.jpg"},
+    {"name": "kumar", "image": "assets/artist/kumarsanu.jfif"},
+    {"name": "arijit", "image": "assets/artist/arjit.jfif"},
+    {"name": "k.k", "image": "assets/artist/kk.jfif"},
+    {"name": "dhvani", "image": "assets/artist/dhvani.jfif"},
+    {"name": "sonu", "image": "assets/artist/arjit.jfif"},
+    {"name": "king", "image": "assets/artist/king.jfif"},
+    {"name": "honey", "image": "assets/artist/honeysingh.jfif"},
+    {"name": "kishor", "image": "assets/artist/kishor.jfif"},
+    {"name": "shreya", "image": "assets/artist/shreya.jfif"},
+    {"name": "rafi", "image": "assets/artist/rafi.jfif"},
+    {"name": "badshah", "image": "assets/artist/badshah.jfif"},
+    {"name": "darshan", "image": "assets/artist/darshan.jfif"},
+    {"name": "sidhu", "image": "assets/artist/sidhu.jfif"},
+    {"name": "jubin", "image": "assets/artist/jubin.jfif"},
+  ];
+
+  String getImage(index) {
+    for (Map<String, String> ele in nameAndImage) {
+      if (artistNames[index]
+          .toString()
+          .toLowerCase()
+          .contains(ele["name"].toString().toLowerCase())) {
+        return ele["image"]!;
+      } else {}
+    }
+    return "assets/play.png";
   }
 
   @override
@@ -385,15 +435,20 @@ class _HomeState extends State<Home> {
                         itemCount: artistNames.length,
                         itemBuilder: (context, index) {
                           // print(" playlist : Res = ${res[artistNames[index]]}");
+
+                          final artistImage = getImage(index);
+
                           return Padding(
                             padding: EdgeInsets.only(right: 12),
                             child: GestureDetector(
-                              onTap: () {
+                              onTap: () async {
                                 print(
                                     "going to playlist : Res = ${res[artistNames[index]]}");
+
                                 Get.to(() => PlayListPlayer(
                                       res: res[artistNames[index]],
                                       ArtistName: artistNames[index],
+                                      ArtistImage: artistImage,
                                     ));
                               },
                               child: Container(
@@ -407,7 +462,7 @@ class _HomeState extends State<Home> {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(20),
                                         child: Image.asset(
-                                          "assets/arjit.jpg",
+                                          artistImage,
                                           fit: BoxFit.fill,
                                         ),
                                       ),
@@ -427,6 +482,39 @@ class _HomeState extends State<Home> {
                           );
                         },
                       );
+                    } else {
+                      Toast.show("Some Error occured while fetching data",
+                          duration: 2);
+                      return SizedBox();
+                    }
+                  }),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              "Bhajans",
+              style: TextStyle(
+                  fontSize: 21,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Container(
+              height: h * 0.2,
+              width: w - 40,
+              child: FutureBuilder(
+                  future: getBhajans(),
+                  builder: (context, AsyncSnapshot<dynamic> data) {
+                    if (data.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (data.connectionState == ConnectionState.done) {
+                      final res = data.data;
+                      return BuildList(res: res);
                     } else {
                       Toast.show("Some Error occured while fetching data",
                           duration: 2);

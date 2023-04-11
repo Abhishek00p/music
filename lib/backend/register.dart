@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:music/backend/database.dart';
 import 'package:music/backend/login.dart';
 import 'package:toast/toast.dart';
+import 'package:music/helper/colors.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -15,12 +16,29 @@ class _SignupPageState extends State<SignupPage> {
   final _passwordController = TextEditingController();
   final _nameController = TextEditingController();
 
+  bool hide = true;
+
+  hidePass() async {
+    setState(() {
+      hide = !hide;
+    });
+  }
+
   void _handleSignup() async {
     if (_formKey.currentState!.validate()) {
-      final user =
-          await signUp(_emailController.text, _passwordController.text);
-      // Toast.show("Hello ${user.toString()}");
+      final user = await signUp(_emailController.text, _passwordController.text,
+          _nameController.text);
+      user != null
+          ? Navigator.push(
+              context, MaterialPageRoute(builder: (context) => LoginPage()))
+          : await emptyallField();
     }
+  }
+
+  emptyallField() async {
+    _nameController.clear();
+    _passwordController.clear();
+    _emailController.clear();
   }
 
   @override
@@ -38,14 +56,25 @@ class _SignupPageState extends State<SignupPage> {
             padding: EdgeInsets.all(20),
             child: Stack(children: [
               Positioned(
-                  top: h * 0.1,
-                  left: w * 0.3,
-                  child: Text(
-                    "Register",
-                    style: TextStyle(fontSize: 34, color: Colors.white),
-                  )),
+                top: 15,
+                child: Container(
+                    height: 60,
+                    padding: EdgeInsets.all(2),
+                    width: w - 50,
+                    decoration: BoxDecoration(
+                      border: Border.all(),
+                      color: whitealpha,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Register",
+                        style: TextStyle(color: Colors.white, fontSize: 22),
+                      ),
+                    )),
+              ),
               Positioned(
-                top: h * 0.2,
+                top: h * 0.28,
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -103,6 +132,9 @@ class _SignupPageState extends State<SignupPage> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email address';
                             }
+                            if (!value.toString().contains("@gmail.com")) {
+                              return "Please enter a correct Email format";
+                            }
                             return null;
                           },
                         ),
@@ -112,9 +144,23 @@ class _SignupPageState extends State<SignupPage> {
                         width: w - 40,
                         child: TextFormField(
                           controller: _passwordController,
-                          obscureText: true,
+                          obscureText: hide ? true : false,
                           style: TextStyle(fontSize: 18, color: Colors.white),
                           decoration: InputDecoration(
+                            suffixIcon: GestureDetector(
+                              onTap: () async {
+                                await hidePass();
+                              },
+                              child: !hide
+                                  ? Icon(
+                                      Icons.remove_red_eye,
+                                      color: Colors.white,
+                                    )
+                                  : Icon(
+                                      Icons.lock,
+                                      color: Colors.white,
+                                    ),
+                            ),
                             focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white)),
                             errorBorder: OutlineInputBorder(
@@ -132,6 +178,9 @@ class _SignupPageState extends State<SignupPage> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your password';
+                            }
+                            if (value.length < 6) {
+                              return 'Please enter a Strong pass Or more then 6 character';
                             }
                             return null;
                           },
@@ -157,7 +206,7 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
               Positioned(
-                  bottom: h * 0.3,
+                  bottom: h * 0.15,
                   left: w * 0.1,
                   child: Row(
                     children: [
@@ -174,7 +223,7 @@ class _SignupPageState extends State<SignupPage> {
                     ],
                   )),
               Positioned(
-                  bottom: h * 0.25,
+                  top: h * 0.15,
                   left: 0,
                   child: Container(
                     height: 50,
@@ -190,27 +239,6 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                       ],
                     ),
-                  )),
-              Positioned(
-                  bottom: h * 0.15,
-                  left: w * 0.2,
-                  child: Row(
-                    children: [
-                      Text(
-                        "SignUp with Google",
-                        style: TextStyle(fontSize: 18, color: Colors.white),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          signInWithGoogle();
-                        },
-                        child: Image.asset(
-                          "assets/google.png",
-                          height: 50,
-                          width: 50,
-                        ),
-                      )
-                    ],
                   )),
               Positioned(
                   bottom: 20,

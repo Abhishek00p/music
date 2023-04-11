@@ -27,6 +27,7 @@ class _PlayListPlayerState extends State<PlayListPlayer> {
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: whitealpha,
       body: SafeArea(
@@ -51,7 +52,7 @@ class _PlayListPlayerState extends State<PlayListPlayer> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(40),
                           child: Image.asset(
-                            "assets/arjit.jpg",
+                            widget.ArtistImage,
                             fit: BoxFit.cover,
                           ),
                         ),

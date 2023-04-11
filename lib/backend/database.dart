@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -24,30 +25,38 @@ Future<String> uploadFile(File file, String fileName) async {
 // Authentication
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-Future signUp(String email, String password) async {
+Future signUp(String email, String password, String name) async {
   try {
     UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
     User user = userCredential.user!;
+    await user.updateDisplayName(name);
+
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    // final usernameColl =
+    //     firestore.collection("users").doc(user.uid).collection("name").doc();
+    // await usernameColl.set({"name": user.displayName.toString()});
+
     Toast.show("user Register succesfully",
         duration: 2,
         backgroundColor: Colors.white,
         textStyle: TextStyle(color: Colors.black));
-    return {"val": true, "user": user};
+    return user;
     // Do something with the user object
   } on FirebaseAuthException catch (e) {
     if (e.code == 'weak-password') {
       Toast.show('The password provided is too weak.', duration: 3);
-      return {"val": false, "user": "user"};
+      return null;
     } else if (e.code == 'email-already-in-use') {
       Toast.show('The account already exists for that email.', duration: 3);
-      return {"val": false, "user": "user"};
+      return null;
     }
   } catch (e) {
     Toast.show(e.toString(), duration: 3);
-    return {"val": false, "user": "user"};
+    return null;
   }
 }
 
@@ -119,8 +128,6 @@ Future<void> signOutGoogle() async {
 }
 
 readData() async {
-  // final storageRef = FirebaseStorage.instance
-  //     .refFromURL("https://music-app-84927-default-rtdb.firebaseio.com/arjit");
   final storageRef = FirebaseStorage.instance.ref();
   var dataList;
   await storageRef.child("arjit").listAll().then((value) => dataList = value);
