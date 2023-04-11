@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -78,10 +77,12 @@ Future signIn(String email, String password) async {
       Toast.show('No user found for that email.', duration: 3);
     } else if (e.code == 'wrong-password') {
       Toast.show('Wrong password provided for that user.', duration: 3);
+    } else {
+      Toast.show(e.toString(), duration: 3);
     }
     return false;
   } catch (e) {
-    Toast.show(e.toString());
+    Toast.show(e.toString(), duration: 3);
     return false;
   }
 }
@@ -98,7 +99,7 @@ Future<void> googleSignInSetup() async {
   try {
     await googleSignIn.signIn();
   } catch (error) {
-    Toast.show(error.toString());
+    Toast.show(error.toString(), duration: 3);
   }
 }
 
@@ -118,9 +119,41 @@ Future<void> signInWithGoogle() async {
 
     Get.to(() => NavPages());
   } catch (e) {
-    Toast.show("$e");
+    Toast.show("$e", duration: 3);
   }
   // Do something with the user object
+}
+
+FirebaseAuth auth = FirebaseAuth.instance;
+
+Future<void> verifyPhoneNumber(String phoneNumber) async {
+  await auth.verifyPhoneNumber(
+    phoneNumber: phoneNumber,
+    verificationCompleted: (PhoneAuthCredential credential) {
+      // Automatic verification or instant validation
+      // This method can be called directly because the user is already authenticated
+      signInWithCredential(credential);
+    },
+    verificationFailed: (FirebaseAuthException e) {
+      // Handle verification failed errors
+    },
+    codeSent: (String verificationId, int? resendToken) {
+      // Save verification ID and resend token
+      // Navigate to OTP verification screen
+    },
+    codeAutoRetrievalTimeout: (String verificationId) {
+      // Handle timeout error
+    },
+  );
+}
+
+Future<void> signInWithCredential(PhoneAuthCredential credential) async {
+  try {
+    UserCredential userCredential = await auth.signInWithCredential(credential);
+    // User is signed in
+  } on FirebaseAuthException catch (e) {
+    // Handle sign-in errors
+  }
 }
 
 Future<void> signOutGoogle() async {

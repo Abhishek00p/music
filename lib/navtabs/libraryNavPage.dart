@@ -46,65 +46,151 @@ class _LibraryPageState extends State<LibraryPage> {
         color: whitealpha,
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Library ",
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.white,
-                      )),
-                  Row(
-                    children: [
-                      Text(
-                        "Log out",
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
-                      IconButton(
-                          onPressed: () async {
-                            await signOut();
-                            await signOutGoogle();
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()));
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Library ",
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.white,
+                        )),
+                    Row(
+                      children: [
+                        Text(
+                          "Log out",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                        IconButton(
+                            onPressed: () async {
+                              await signOut();
+                              await signOutGoogle();
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginPage()));
+                            },
+                            icon: Icon(
+                              Icons.logout,
+                              size: 25,
+                              color: Colors.white,
+                            )),
+                      ],
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Your Musics",
+                  style: TextStyle(fontSize: 22, color: Colors.white),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: h * 0.22,
+                  width: w,
+                  child: FutureBuilder(
+                    future: getMusic(),
+                    builder: (context, AsyncSnapshot<List> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.data!.length == 0) {
+                          return SizedBox(
+                            height: 80,
+                            width: 250,
+                            child: Center(
+                              child: Text(
+                                "No Music found , upload your voice by going to Post Page",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white),
+                              ),
+                            ),
+                          );
+                        }
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          physics: BouncingScrollPhysics(),
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, ind) {
+                            final docref = snapshot.data![ind].id;
+
+                            return Padding(
+                                padding: EdgeInsets.only(right: 15),
+                                child: GestureDetector(
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AlbumPage(
+                                              song: snapshot.data![ind]))),
+                                  child: Container(
+                                    height: h * 0.22,
+                                    width: w * 0.45,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Container(
+                                          height: h * 0.13,
+                                          width: w * 0.45,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            child: Image.network(
+                                              snapshot.data![ind]["image_url"],
+                                              fit: BoxFit.fill,
+                                            ),
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              snapshot.data![ind]["song_name"],
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.white),
+                                            ),
+                                            IconButton(
+                                                onPressed: () async {
+                                                  await removeSongFromLibrary(
+                                                      docref);
+                                                  setState(() {});
+                                                },
+                                                icon: Icon(
+                                                  Icons.delete,
+                                                  size: 25,
+                                                  color: Colors.white,
+                                                ))
+                                          ],
+                                        ),
+                                        Text(
+                                          snapshot.data![ind]["artist_name"],
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ));
                           },
-                          icon: Icon(
-                            Icons.logout,
-                            size: 25,
-                            color: Colors.white,
-                          )),
-                    ],
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Your Musics",
-                style: TextStyle(fontSize: 22, color: Colors.white),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: h * 0.22,
-                width: w,
-                child: FutureBuilder(
-                  future: getMusic(),
-                  builder: (context, AsyncSnapshot<List> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
-                    }
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.data!.length == 0) {
+                        );
+                      } else {
                         return SizedBox(
                           height: 80,
                           width: 250,
@@ -112,20 +198,56 @@ class _LibraryPageState extends State<LibraryPage> {
                             child: Text(
                               "No Music found , upload your voice by going to Post Page",
                               style:
-                                  TextStyle(fontSize: 16, color: Colors.white),
+                                  TextStyle(fontSize: 24, color: Colors.white),
                             ),
                           ),
                         );
                       }
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        physics: BouncingScrollPhysics(),
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, ind) {
-                          final docref = snapshot.data![ind].id;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                Text(
+                  "Your Podcasts",
+                  style: TextStyle(fontSize: 22, color: Colors.white),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: h * 0.33,
+                  width: w,
+                  child: FutureBuilder(
+                    future: getPodcast(),
+                    builder: (context, AsyncSnapshot<List> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.data!.length == 0) {
+                          return SizedBox(
+                            height: 80,
+                            width: 250,
+                            child: Center(
+                              child: Text(
+                                "No Podcast found , upload your voice by going to Post Page",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white),
+                              ),
+                            ),
+                          );
+                        }
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          physics: BouncingScrollPhysics(),
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, ind) {
+                            final docref = snapshot.data![ind].id;
 
-                          return Padding(
+                            return Padding(
                               padding: EdgeInsets.only(right: 15),
                               child: GestureDetector(
                                 onTap: () => Navigator.push(
@@ -134,17 +256,17 @@ class _LibraryPageState extends State<LibraryPage> {
                                         builder: (context) => AlbumPage(
                                             song: snapshot.data![ind]))),
                                 child: Container(
-                                  height: h * 0.22,
-                                  width: w * 0.45,
+                                  height: h * 0.30,
+                                  width: w * 0.6,
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        height: h * 0.13,
-                                        width: w * 0.45,
+                                        height: h * 0.2,
+                                        width: w * 0.6,
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(20),
@@ -166,7 +288,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                           ),
                                           IconButton(
                                               onPressed: () async {
-                                                await removeSongFromLibrary(
+                                                await removePodcastFromLibrary(
                                                     docref);
                                                 setState(() {});
                                               },
@@ -185,45 +307,11 @@ class _LibraryPageState extends State<LibraryPage> {
                                     ],
                                   ),
                                 ),
-                              ));
-                        },
-                      );
-                    } else {
-                      return SizedBox(
-                        height: 80,
-                        width: 250,
-                        child: Center(
-                          child: Text(
-                            "No Music found , upload your voice by going to Post Page",
-                            style: TextStyle(fontSize: 24, color: Colors.white),
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              Text(
-                "Your Podcasts",
-                style: TextStyle(fontSize: 22, color: Colors.white),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: h * 0.33,
-                width: w,
-                child: FutureBuilder(
-                  future: getPodcast(),
-                  builder: (context, AsyncSnapshot<List> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
-                    }
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.data!.length == 0) {
+                              ),
+                            );
+                          },
+                        );
+                      } else {
                         return SizedBox(
                           height: 80,
                           width: 250,
@@ -231,97 +319,16 @@ class _LibraryPageState extends State<LibraryPage> {
                             child: Text(
                               "No Podcast found , upload your voice by going to Post Page",
                               style:
-                                  TextStyle(fontSize: 16, color: Colors.white),
+                                  TextStyle(fontSize: 24, color: Colors.white),
                             ),
                           ),
                         );
                       }
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        physics: BouncingScrollPhysics(),
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, ind) {
-                          final docref = snapshot.data![ind].id;
-
-                          return Padding(
-                            padding: EdgeInsets.only(right: 15),
-                            child: GestureDetector(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AlbumPage(
-                                          song: snapshot.data![ind]))),
-                              child: Container(
-                                height: h * 0.30,
-                                width: w * 0.6,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height: h * 0.2,
-                                      width: w * 0.6,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: Image.network(
-                                          snapshot.data![ind]["image_url"],
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          snapshot.data![ind]["song_name"],
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.white),
-                                        ),
-                                        IconButton(
-                                            onPressed: () async {
-                                              await removePodcastFromLibrary(
-                                                  docref);
-                                              setState(() {});
-                                            },
-                                            icon: Icon(
-                                              Icons.delete,
-                                              size: 25,
-                                              color: Colors.white,
-                                            ))
-                                      ],
-                                    ),
-                                    Text(
-                                      snapshot.data![ind]["artist_name"],
-                                      style: TextStyle(
-                                          fontSize: 18, color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    } else {
-                      return SizedBox(
-                        height: 80,
-                        width: 250,
-                        child: Center(
-                          child: Text(
-                            "No Podcast found , upload your voice by going to Post Page",
-                            style: TextStyle(fontSize: 24, color: Colors.white),
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              )
-            ],
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
         ));
   }

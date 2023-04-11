@@ -18,14 +18,6 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool hide = true;
-
-  hidePass() async {
-    setState(() {
-      hide = !hide;
-    });
-  }
-
   void _handleLogin() async {
     CircularProgressIndicator();
 
@@ -67,118 +59,91 @@ class _LoginPageState extends State<LoginPage> {
                     )),
               ),
               Positioned(
-                  top: h * 0.3,
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: w - 40,
-                          child: TextFormField(
-                            enabled: true,
-                            controller: _emailController,
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
-                              errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.red)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.brown[400]!)),
-                              fillColor: Colors.white,
-                              labelStyle: TextStyle(color: Colors.white),
-                              errorStyle:
-                                  TextStyle(fontSize: 16, color: Colors.amber),
-                              labelText: 'Email',
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your email address';
-                              }
-                              if (!value.toString().contains("@gmail.com")) {
-                                return "Please enter a correct Email format";
-                              }
-                              return null;
-                            },
+                top: h * 0.3,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: w - 40,
+                        child: TextFormField(
+                          enabled: true,
+                          controller: _emailController,
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white)),
+                            errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.brown[400]!)),
+                            fillColor: Colors.white,
+                            labelStyle: TextStyle(color: Colors.white),
+                            errorStyle:
+                                TextStyle(fontSize: 16, color: Colors.amber),
+                            labelText: 'Email',
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white)),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email address';
+                            }
+                            return null;
+                          },
                         ),
-                        SizedBox(height: 16),
-                        Container(
-                          width: w - 40,
-                          child: TextFormField(
-                            controller: _passwordController,
-                            obscureText: hide ? true : false,
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                            decoration: InputDecoration(
-                              suffixIcon: GestureDetector(
-                                onTap: () async {
-                                  await hidePass();
-                                },
-                                child: !hide
-                                    ? Icon(
-                                        Icons.remove_red_eye,
-                                        color: Colors.white,
-                                      )
-                                    : Icon(
-                                        Icons.lock,
-                                        color: Colors.white,
-                                      ),
+                      ),
+                      SizedBox(height: 16),
+                      Container(
+                        width: w - 40,
+                        child: TextFormField(
+                          controller: _passwordController,
+                          obscureText: true,
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white)),
+                            errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.brown[400]!)),
+                            fillColor: Colors.white,
+                            labelStyle: TextStyle(color: Colors.white),
+                            errorStyle:
+                                TextStyle(fontSize: 16, color: Colors.amber),
+                            labelText: 'Password',
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Container(
+                          height: 50,
+                          width: 100,
+                          child: Card(
+                            child: TextButton(
+                              onPressed: _handleLogin,
+                              child: Text(
+                                'Login',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Color.fromARGB(255, 82, 68, 68)),
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
-                              errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.red)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.brown[400]!)),
-                              fillColor: Colors.white,
-                              labelStyle: TextStyle(color: Colors.white),
-                              errorStyle:
-                                  TextStyle(fontSize: 16, color: Colors.amber),
-                              labelText: 'Password',
-                              border: OutlineInputBorder(),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your password';
-                              }
-                              if (value.length < 6) {
-                                return 'Please enter a Strong pass Or more then 6 character';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        SizedBox(height: 35),
-                        Row(
-                          children: [
-                            Container(
-                                height: 50,
-                                width: 100,
-                                child: Card(
-                                  child: TextButton(
-                                    onPressed: _handleLogin,
-                                    child: Text(
-                                      'Login',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color:
-                                              Color.fromARGB(255, 82, 68, 68)),
-                                    ),
-                                  ),
-                                )),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 16,
-                        ),
-                      ],
-                    ),
-                  )),
+                          )),
+                    ],
+                  ),
+                ),
+              ),
               Positioned(
                   bottom: h * 0.2,
                   left: w * 0.1,

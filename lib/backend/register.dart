@@ -26,12 +26,9 @@ class _SignupPageState extends State<SignupPage> {
 
   void _handleSignup() async {
     if (_formKey.currentState!.validate()) {
-      final user = await signUp(_emailController.text, _passwordController.text,
-          _nameController.text);
-      user != null
-          ? Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LoginPage()))
-          : await emptyallField();
+      final user =
+          await signUp(_emailController.text, _passwordController.text);
+      // Toast.show("Hello ${user.toString()}");
     }
   }
 
