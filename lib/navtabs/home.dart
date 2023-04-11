@@ -178,6 +178,8 @@ class _HomeState extends State<Home> {
         }
       } else {
         if (element.get("category").toString().trim() != "mashup" &&
+            element.get("category").toString().toLowerCase().trim() !=
+                "podcast" &&
             element.get("category").toString().trim() != "bhajan") {
           artistNames.add(val);
           artistmap[val] = [];
