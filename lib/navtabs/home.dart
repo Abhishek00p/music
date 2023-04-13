@@ -340,6 +340,57 @@ class _HomeState extends State<Home> {
               height: 20,
             ),
             Text(
+              "Recommanded",
+              style: TextStyle(
+                  fontSize: 21,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Container(
+              height: h * 0.2,
+              width: w - 40,
+              child: FutureBuilder(
+                  future: getAllArtist(),
+                  builder: (context, AsyncSnapshot<dynamic> data) {
+                    if (data.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (data.connectionState == ConnectionState.done) {
+                      final res = data.data;
+                      artistNames.shuffle();
+                      var nameList = [];
+                      for (int i = 0; i < 3; i++) {
+                        nameList.add(artistNames[i]);
+                      }
+                      var resList = [];
+                      for (int i = 0; i < nameList.length; i++) {
+                        resList.add(res[nameList[i]]);
+                      }
+                      var songlist = [];
+                      for (var i = 0; i < resList.length; i++) {
+                        for (var j = 0; j < 3; j++) {
+                          songlist.add(resList[i][j]);
+                        }
+                      }
+                      print("  res : ${res[artistNames[2]]}");
+                      // return Container();
+                      songlist.shuffle();
+                      return BuildList(res: songlist);
+                    } else {
+                      Toast.show("Some Error occured while fetching data",
+                          duration: 2);
+                      return SizedBox();
+                    }
+                  }),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
               "Old Songs",
               style: TextStyle(
                   fontSize: 21,
