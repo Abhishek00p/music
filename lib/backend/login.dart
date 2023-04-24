@@ -5,6 +5,7 @@ import 'package:music/helper/colors.dart';
 import 'package:music/navtabs/home.dart';
 import 'package:music/navtabs/postpage.dart';
 import 'package:music/backend/register.dart';
+import 'package:toast/toast.dart';
 
 import 'database.dart';
 import '../navtabs/libraryNavPage.dart';
@@ -55,6 +56,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
+    ToastContext().init(context);
+
     return Scaffold(
       backgroundColor: Colors.white.withAlpha(40),
       body: isLoading
@@ -251,19 +254,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
