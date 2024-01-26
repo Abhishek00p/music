@@ -1,14 +1,11 @@
-import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:io';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:music/navtabs/home.dart';
 import 'package:toast/toast.dart';
@@ -43,7 +40,7 @@ Future signUp(String email, String password, String name) async {
     Toast.show("user Register succesfully",
         duration: 2,
         backgroundColor: Colors.white,
-        textStyle: TextStyle(color: Colors.black));
+        textStyle: const TextStyle(color: Colors.black));
     return user;
     // Do something with the user object
   } on FirebaseAuthException catch (e) {
@@ -70,7 +67,7 @@ Future signIn(String email, String password) async {
     Toast.show("Welcome",
         duration: 2,
         backgroundColor: Colors.white,
-        textStyle: TextStyle(color: Colors.black));
+        textStyle: const TextStyle(color: Colors.black));
     return true;
     // Do something with the user object
   } on FirebaseAuthException catch (e) {
@@ -118,7 +115,7 @@ Future<void> signInWithGoogle() async {
         await _auth.signInWithCredential(credential);
     final User user = userCredential.user!;
 
-    Get.to(() => NavPages());
+    Get.to(() => const NavPages());
   } catch (e) {
     Toast.show("$e", duration: 3);
   }
@@ -152,7 +149,7 @@ Future<void> signInWithCredential(PhoneAuthCredential credential) async {
   try {
     UserCredential userCredential = await auth.signInWithCredential(credential);
     // User is signed in
-  } on FirebaseAuthException catch (e) {
+  } on FirebaseAuthException {
     // Handle sign-in errors
   }
 }
@@ -163,11 +160,11 @@ Future<void> signOutGoogle() async {
 
 readData() async {
   final storageRef = FirebaseStorage.instance.ref();
-  var dataList;
+  ListResult? dataList;
   await storageRef.child("arjit").listAll().then((value) => dataList = value);
   // print("data : $dataList");
-  for (var element in dataList.items) {
-    var data;
+  for (var element in (dataList?.items ?? [])) {
+    Uint8List? data;
 
     await element.getData().then((val) {
       data = val;

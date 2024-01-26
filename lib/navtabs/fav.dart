@@ -33,31 +33,31 @@ class _FavSongsState extends State<FavSongs> {
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
-    return Container(
+    return SizedBox(
         height: h,
         width: w,
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
-            Text(
+            const Text(
               "Your Favourite Songs",
               style: TextStyle(
                   fontSize: 22,
                   color: Colors.white,
                   fontWeight: FontWeight.w700),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             FutureBuilder(
               future: getReady(),
               builder: (context, AsyncSnapshot<List> snap) {
                 if (snap.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 } else if (snap.hasError) {
-                  return Container(
+                  return const SizedBox(
                     height: 50,
                     child: Text("Retry in few secs"),
                   );
@@ -66,33 +66,33 @@ class _FavSongsState extends State<FavSongs> {
                     return Expanded(
                       child: ListView.builder(
                         shrinkWrap: true,
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         itemCount: snap.data!.length,
                         itemBuilder: (context, index) {
                           final docref = snap.data![index].id;
                           return Padding(
                             padding:
-                                EdgeInsets.only(bottom: 15, left: 15, right: 5),
+                                const EdgeInsets.only(bottom: 15, left: 15, right: 5),
                             child: Row(
                               children: [
                                 Container(
                                   height: h * 0.1,
                                   width: w * 0.8,
-                                  padding: EdgeInsets.only(right: 8),
+                                  padding: const EdgeInsets.only(right: 8),
                                   decoration: BoxDecoration(
                                       color: Colors.grey[600]!.withOpacity(0.2),
-                                      borderRadius: BorderRadius.only(
+                                      borderRadius: const BorderRadius.only(
                                           topRight: Radius.circular(40),
                                           bottomRight: Radius.circular(40))),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         height: h * 0.1,
                                         width: w * 0.25,
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.only(
+                                          borderRadius: const BorderRadius.only(
                                               topRight: Radius.circular(20),
                                               bottomRight: Radius.circular(20)),
                                           child: Image.network(
@@ -101,7 +101,7 @@ class _FavSongsState extends State<FavSongs> {
                                           ),
                                         ),
                                       ),
-                                      Container(
+                                      SizedBox(
                                         width: w * 0.3,
                                         child: Column(
                                           mainAxisAlignment:
@@ -110,7 +110,7 @@ class _FavSongsState extends State<FavSongs> {
                                             Text(
                                               snap.data![index]["song_name"]
                                                   .toString(),
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w700,
                                                   color: Colors.white),
@@ -118,7 +118,7 @@ class _FavSongsState extends State<FavSongs> {
                                             Text(
                                               snap.data![index]["artist_name"]
                                                   .toString(),
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w400,
                                                   color: Colors.white),
@@ -139,7 +139,7 @@ class _FavSongsState extends State<FavSongs> {
                                               borderRadius:
                                                   BorderRadius.circular(40),
                                               color: Colors.blueAccent),
-                                          child: Center(
+                                          child: const Center(
                                             child: Text(
                                               "Play ",
                                               style: TextStyle(
@@ -159,7 +159,7 @@ class _FavSongsState extends State<FavSongs> {
 
                                       setState(() {});
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.favorite,
                                       size: 22,
                                       color: Colors.white,
@@ -171,8 +171,8 @@ class _FavSongsState extends State<FavSongs> {
                       ),
                     );
                   } else {
-                    return Center(
-                        child: Container(
+                    return const Center(
+                        child: SizedBox(
                       height: 100,
                       width: 200,
                       child: Center(
@@ -184,7 +184,7 @@ class _FavSongsState extends State<FavSongs> {
                     ));
                   }
                 } else {
-                  return SizedBox();
+                  return const SizedBox();
                 }
               },
             ),
@@ -203,6 +203,6 @@ removeSongFromFav(docID) async {
   await docref.delete();
   Toast.show("REmoved from fav",
       duration: 2,
-      textStyle: TextStyle(color: Colors.deepPurple),
+      textStyle: const TextStyle(color: Colors.deepPurple),
       backgroundColor: Colors.white);
 }

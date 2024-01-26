@@ -13,13 +13,15 @@ import '../helper/listviewBuilder.dart';
 import 'postpage.dart';
 
 class NavPages extends StatefulWidget {
+  const NavPages({super.key});
+
   @override
   State<NavPages> createState() => _NavPagesState();
 }
 
 class _NavPagesState extends State<NavPages> {
   int navBarIndex = 1;
-  List<Widget> pages = [LibraryPage(), MyWidget(), PostNavPage(), FavSongs()];
+  List<Widget> pages = [const LibraryPage(), const MyWidget(), const PostNavPage(), const FavSongs()];
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +35,15 @@ class _NavPagesState extends State<NavPages> {
           initialIndex: 1,
           length: pages.length,
           child: Container(
-            padding: EdgeInsets.only(top: 0),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.only(top: 0),
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20), topRight: Radius.circular(20)),
               color: Colors.transparent,
             ),
             child: Container(
               height: 60,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.transparent,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20),
@@ -56,11 +58,11 @@ class _NavPagesState extends State<NavPages> {
                   onTap: (value) => setState(() {
                     navBarIndex = value;
                   }),
-                  labelColor: Color.fromARGB(255, 255, 255, 255),
+                  labelColor: const Color.fromARGB(255, 255, 255, 255),
                   indicatorColor: Colors.white,
-                  indicatorPadding: EdgeInsets.symmetric(horizontal: 10),
-                  unselectedLabelColor: Color.fromARGB(255, 177, 167, 167),
-                  tabs: [
+                  indicatorPadding: const EdgeInsets.symmetric(horizontal: 10),
+                  unselectedLabelColor: const Color.fromARGB(255, 177, 167, 167),
+                  tabs: const [
                     Tab(
                       icon: Icon(
                         Icons.library_music,
@@ -251,20 +253,20 @@ class _HomeState extends State<Home> {
     return SingleChildScrollView(
       child: Container(
         height: h * 0.8,
-        padding: EdgeInsets.only(left: 20, right: 20),
+        padding: const EdgeInsets.only(left: 20, right: 20),
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             // Carousel
-            Container(
+            SizedBox(
               height: h * 0.2,
               width: w - 40,
               child: CarouselSlider(
                 items: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
+                    child: SizedBox(
                         height: h * 0.19,
                         width: w - 40,
                         child: Image.asset(
@@ -274,7 +276,7 @@ class _HomeState extends State<Home> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
+                    child: SizedBox(
                         height: h * 0.19,
                         width: w - 40,
                         child: Image.asset(
@@ -284,7 +286,7 @@ class _HomeState extends State<Home> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
+                    child: SizedBox(
                         height: h * 0.19,
                         width: w - 40,
                         child: Image.asset(
@@ -297,35 +299,35 @@ class _HomeState extends State<Home> {
                   height: h * 0.2,
                   aspectRatio: 16 / 9,
                   autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 3),
+                  autoPlayInterval: const Duration(seconds: 3),
                   autoPlayCurve: Curves.linearToEaseOut,
-                  scrollPhysics: BouncingScrollPhysics(),
+                  scrollPhysics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                 ),
               ),
             ),
 
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Text(
+            const Text(
               "Hip Hop",
               style: TextStyle(
                   fontSize: 21,
                   color: Colors.white,
                   fontWeight: FontWeight.w700),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            Container(
+            SizedBox(
               height: h * 0.2,
               width: w - 40,
               child: FutureBuilder(
                   future: getHipHopSongs(),
                   builder: (context, AsyncSnapshot<dynamic> data) {
                     if (data.connectionState == ConnectionState.waiting) {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     } else if (data.connectionState == ConnectionState.done) {
@@ -335,31 +337,31 @@ class _HomeState extends State<Home> {
                     } else {
                       Toast.show("Some Error occured while fetching data",
                           duration: 2);
-                      return SizedBox();
+                      return const SizedBox();
                     }
                   }),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Text(
+            const Text(
               "Recommanded",
               style: TextStyle(
                   fontSize: 21,
                   color: Colors.white,
                   fontWeight: FontWeight.w700),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            Container(
+            SizedBox(
               height: h * 0.2,
               width: w - 40,
               child: FutureBuilder(
                   future: getAllArtist(),
                   builder: (context, AsyncSnapshot<dynamic> data) {
                     if (data.connectionState == ConnectionState.waiting) {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     } else if (data.connectionState == ConnectionState.done) {
@@ -386,31 +388,31 @@ class _HomeState extends State<Home> {
                     } else {
                       Toast.show("Some Error occured while fetching data",
                           duration: 2);
-                      return SizedBox();
+                      return const SizedBox();
                     }
                   }),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Text(
+            const Text(
               "Old Songs",
               style: TextStyle(
                   fontSize: 21,
                   color: Colors.white,
                   fontWeight: FontWeight.w700),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            Container(
+            SizedBox(
               height: h * 0.2,
               width: w - 40,
               child: FutureBuilder(
                   future: getOldSongs(),
                   builder: (context, AsyncSnapshot<dynamic> data) {
                     if (data.connectionState == ConnectionState.waiting) {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     } else if (data.connectionState == ConnectionState.done) {
@@ -419,31 +421,31 @@ class _HomeState extends State<Home> {
                     } else {
                       Toast.show("Some Error occured while fetching data",
                           duration: 2);
-                      return SizedBox();
+                      return const SizedBox();
                     }
                   }),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Text(
+            const Text(
               "Recently Added",
               style: TextStyle(
                   fontSize: 21,
                   color: Colors.white,
                   fontWeight: FontWeight.w700),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            Container(
+            SizedBox(
               height: h * 0.2,
               width: w - 40,
               child: FutureBuilder(
                   future: getUserSongs(),
                   builder: (context, AsyncSnapshot<dynamic> data) {
                     if (data.connectionState == ConnectionState.waiting) {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     } else if (data.connectionState == ConnectionState.done) {
@@ -452,31 +454,31 @@ class _HomeState extends State<Home> {
                     } else {
                       Toast.show("Some Error occured while fetching data",
                           duration: 2);
-                      return SizedBox();
+                      return const SizedBox();
                     }
                   }),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Text(
+            const Text(
               "Top Artist",
               style: TextStyle(
                   fontSize: 21,
                   color: Colors.white,
                   fontWeight: FontWeight.w700),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            Container(
+            SizedBox(
               height: h * 0.2,
               width: w - 40,
               child: FutureBuilder(
                   future: getAllArtist(),
                   builder: (context, AsyncSnapshot<dynamic> data) {
                     if (data.connectionState == ConnectionState.waiting) {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     } else if (data.connectionState == ConnectionState.done) {
@@ -491,7 +493,7 @@ class _HomeState extends State<Home> {
                           final artistImage = getImage(index);
 
                           return Padding(
-                            padding: EdgeInsets.only(right: 12),
+                            padding: const EdgeInsets.only(right: 12),
                             child: GestureDetector(
                               onTap: () async {
                                 print(
@@ -503,12 +505,12 @@ class _HomeState extends State<Home> {
                                       ArtistImage: artistImage,
                                     ));
                               },
-                              child: Container(
+                              child: SizedBox(
                                 height: h * 0.2,
                                 width: w * 0.35,
                                 child: Column(
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       height: h * 0.16,
                                       width: w * 0.35,
                                       child: ClipRRect(
@@ -519,12 +521,12 @@ class _HomeState extends State<Home> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     Text(
                                       artistNames[index],
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 14, color: Colors.white),
                                     ),
                                   ],
@@ -537,31 +539,31 @@ class _HomeState extends State<Home> {
                     } else {
                       Toast.show("Some Error occured while fetching data",
                           duration: 2);
-                      return SizedBox();
+                      return const SizedBox();
                     }
                   }),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Text(
+            const Text(
               "Bhajans",
               style: TextStyle(
                   fontSize: 21,
                   color: Colors.white,
                   fontWeight: FontWeight.w700),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            Container(
+            SizedBox(
               height: h * 0.2,
               width: w - 40,
               child: FutureBuilder(
                   future: getBhajans(),
                   builder: (context, AsyncSnapshot<dynamic> data) {
                     if (data.connectionState == ConnectionState.waiting) {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     } else if (data.connectionState == ConnectionState.done) {
@@ -570,31 +572,31 @@ class _HomeState extends State<Home> {
                     } else {
                       Toast.show("Some Error occured while fetching data",
                           duration: 2);
-                      return SizedBox();
+                      return const SizedBox();
                     }
                   }),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Text(
+            const Text(
               "Love Songs",
               style: TextStyle(
                   fontSize: 21,
                   color: Colors.white,
                   fontWeight: FontWeight.w700),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            Container(
+            SizedBox(
               height: h * 0.2,
               width: w - 40,
               child: FutureBuilder(
                   future: getLoveSongs(),
                   builder: (context, AsyncSnapshot<dynamic> data) {
                     if (data.connectionState == ConnectionState.waiting) {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     } else if (data.connectionState == ConnectionState.done) {
@@ -603,15 +605,15 @@ class _HomeState extends State<Home> {
                     } else {
                       Toast.show("Some Error occured while fetching data",
                           duration: 2);
-                      return SizedBox();
+                      return const SizedBox();
                     }
                   }),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
 
-            SizedBox(
+            const SizedBox(
               height: 75,
             ),
           ]),

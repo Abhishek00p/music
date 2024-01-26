@@ -58,14 +58,14 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       backgroundColor: whitealpha,
       body: SafeArea(
-        child: Container(
+        child: SizedBox(
           height: h,
           width: w,
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Container(
@@ -83,7 +83,7 @@ class _SearchPageState extends State<SearchPage> {
                           borderRadius: BorderRadius.circular(20)),
                       child: TextFormField(
                         controller: searchController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             hintText: "Search here",
                             hintStyle: TextStyle(fontSize: 18)),
                         onChanged: (val) async {
@@ -104,18 +104,18 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 queryREsult != null
                     ? Expanded(
                         child: ListView.builder(
                         itemCount: queryREsult!.length,
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,
                         itemBuilder: (context, ind) {
                           return Padding(
-                            padding: EdgeInsets.all(15),
+                            padding: const EdgeInsets.all(15),
                             child: GestureDetector(
                               onTap: () => Navigator.push(
                                   context,
@@ -131,7 +131,7 @@ class _SearchPageState extends State<SearchPage> {
                                 child: Center(
                                   child: Text(
                                     "${queryREsult[ind]["songname"]}",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 18, color: Colors.white),
                                   ),
                                 ),
@@ -140,7 +140,7 @@ class _SearchPageState extends State<SearchPage> {
                           );
                         },
                       ))
-                    : SizedBox()
+                    : const SizedBox()
               ],
             ),
           ),

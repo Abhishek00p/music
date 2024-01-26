@@ -12,9 +12,9 @@ class Authenticate extends StatelessWidget {
     final auth = FirebaseAuth.instance;
     ToastContext().init(context);
     if (auth.currentUser != null) {
-      return NavPages();
+      return const NavPages();
     } else {
-      return LoginPage();
+      return const LoginPage();
     }
   }
 }

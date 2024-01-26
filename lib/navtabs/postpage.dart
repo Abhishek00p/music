@@ -4,6 +4,8 @@ import 'package:music/helper/colors.dart';
 import '../helper/upload.dart';
 
 class PostNavPage extends StatefulWidget {
+  const PostNavPage({super.key});
+
   @override
   State<PostNavPage> createState() => _PostNavPageState();
 }
@@ -21,30 +23,30 @@ class _PostNavPageState extends State<PostNavPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
-              Text(
+              const Text(
                 "Tell us your Stories",
                 style: TextStyle(
                     fontSize: 18,
                     color: Colors.deepOrange,
                     fontWeight: FontWeight.w600),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
-              Divider(
+              const Divider(
                 indent: 60,
                 thickness: 1.7,
                 color: Colors.white,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: Container(
+                child: SizedBox(
                   width: w,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,10 +56,10 @@ class _PostNavPageState extends State<PostNavPage> {
                         style:
                             TextStyle(fontSize: 16, color: Colors.green[400]),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
-                      Container(
+                      SizedBox(
                         height: h * 0.3,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,32 +76,32 @@ class _PostNavPageState extends State<PostNavPage> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  Upload(isSong: true)));
+                                                  const Upload(isSong: true)));
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.publish_rounded,
                                       size: 50,
                                       color: Colors.white,
                                     )),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
-                      Text(
+                      const Text(
                         "Upload Podcast",
                         style: TextStyle(fontSize: 16, color: Colors.orange),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
-                      Container(
+                      SizedBox(
                         height: h * 0.25,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,18 +117,18 @@ class _PostNavPageState extends State<PostNavPage> {
                                       final res = await Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => Upload(
+                                              builder: (context) => const Upload(
                                                     isSong: false,
                                                   )));
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.publish_rounded,
                                       size: 50,
                                       color: Colors.white,
                                     )),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                           ],
@@ -136,7 +138,7 @@ class _PostNavPageState extends State<PostNavPage> {
                   ),
                 ),
               ),
-              Divider(
+              const Divider(
                 endIndent: 60,
                 thickness: 1.7,
                 color: Colors.white,

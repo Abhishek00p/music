@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -10,7 +9,6 @@ import 'package:path/path.dart';
 
 import 'package:file_picker/file_picker.dart';
 
-import 'colors.dart';
 
 class Upload extends StatefulWidget {
   final bool isSong;
@@ -80,7 +78,7 @@ class _UploadState extends State<Upload> {
 
   fileuploadTouser(String collectionName, data, context) async {
     final userID = FirebaseAuth.instance.currentUser!.uid;
-    final docu = await FirebaseFirestore.instance
+    final docu = FirebaseFirestore.instance
         .collection("users")
         .doc(userID)
         .collection(collectionName)
@@ -145,7 +143,7 @@ class _UploadState extends State<Upload> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 25,
                   ),
                   Align(
@@ -159,11 +157,11 @@ class _UploadState extends State<Upload> {
                         decoration: BoxDecoration(
                             color: Colors.white,
                             border: Border.all(color: Colors.blue),
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(20),
                                 bottomLeft: Radius.circular(20))),
                         width: 80,
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             "Go back",
                             style: TextStyle(fontSize: 22),
@@ -172,18 +170,18 @@ class _UploadState extends State<Upload> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 25,
                   ),
                   Padding(
-                      padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                      child: Container(
+                      padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                      child: SizedBox(
                         width: MediaQuery.of(context).size.width - 40,
                         child: Column(
                           children: [
                             TextField(
                               controller: songname,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                   fillColor: Colors.orangeAccent,
                                   filled: true,
                                   hintStyle: TextStyle(
@@ -194,12 +192,12 @@ class _UploadState extends State<Upload> {
                                         fontSize: 20, color: Colors.black),
                                   )),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             TextField(
                               controller: artistname,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 fillColor: Colors.orangeAccent,
                                 filled: true,
                                 hintStyle: TextStyle(
@@ -211,12 +209,12 @@ class _UploadState extends State<Upload> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
                             TextField(
                               controller: categoryController,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 fillColor: Colors.orangeAccent,
                                 filled: true,
                                 hintStyle: TextStyle(
@@ -231,11 +229,11 @@ class _UploadState extends State<Upload> {
                           ],
                         ),
                       )),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   imageSelected
-                      ? Container(
+                      ? SizedBox(
                           height: 100,
                           width: 200,
                           child: Image.file(
@@ -248,14 +246,14 @@ class _UploadState extends State<Upload> {
                               border: Border.all(color: Colors.white)),
                           height: 100,
                           width: 200,
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               "Image",
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextButton(
@@ -267,20 +265,20 @@ class _UploadState extends State<Upload> {
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(color: Colors.deepOrange),
                             color: Colors.white),
-                        child: Center(
+                        child: const Center(
                             child: Text(
                           "Select Image",
                         ))),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   songSelected
                       ? Text(
-                          "${songpath}",
-                          style: TextStyle(fontSize: 18, color: Colors.white),
+                          songpath,
+                          style: const TextStyle(fontSize: 18, color: Colors.white),
                         )
-                      : Text(
+                      : const Text(
                           "example.mp3",
                           style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
@@ -293,9 +291,9 @@ class _UploadState extends State<Upload> {
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(color: Colors.deepOrange),
                             color: Colors.white),
-                        child: Center(child: Text("Select Song"))),
+                        child: const Center(child: Text("Select Song"))),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextButton(
@@ -307,7 +305,7 @@ class _UploadState extends State<Upload> {
                             borderRadius: BorderRadius.circular(40),
                             border: Border.all(color: Colors.deepOrange),
                             color: Colors.white),
-                        child: Center(child: Text("Upload"))),
+                        child: const Center(child: Text("Upload"))),
                   ),
                 ],
               ),

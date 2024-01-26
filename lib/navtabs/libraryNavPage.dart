@@ -10,6 +10,8 @@ import '../backend/database.dart';
 import '../screens/album.dart';
 
 class LibraryPage extends StatefulWidget {
+  const LibraryPage({super.key});
+
   @override
   State<LibraryPage> createState() => _LibraryPageState();
 }
@@ -50,20 +52,20 @@ class _LibraryPageState extends State<LibraryPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Library ",
+                    const Text("Library ",
                         style: TextStyle(
                           fontSize: 22,
                           color: Colors.white,
                         )),
                     Row(
                       children: [
-                        Text(
+                        const Text(
                           "Log out",
                           style: TextStyle(fontSize: 16, color: Colors.white),
                         ),
@@ -74,9 +76,9 @@ class _LibraryPageState extends State<LibraryPage> {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoginPage()));
+                                      builder: (context) => const LoginPage()));
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.logout,
                               size: 25,
                               color: Colors.white,
@@ -85,28 +87,28 @@ class _LibraryPageState extends State<LibraryPage> {
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                Text(
+                const Text(
                   "Your Musics",
                   style: TextStyle(fontSize: 22, color: Colors.white),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Container(
+                SizedBox(
                   height: h * 0.22,
                   width: w,
                   child: FutureBuilder(
                     future: getMusic(),
                     builder: (context, AsyncSnapshot<List> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
                       if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.data!.length == 0) {
-                          return SizedBox(
+                        if (snapshot.data!.isEmpty) {
+                          return const SizedBox(
                             height: 80,
                             width: 250,
                             child: Center(
@@ -121,20 +123,20 @@ class _LibraryPageState extends State<LibraryPage> {
                         return ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
-                          physics: BouncingScrollPhysics(),
+                          physics: const BouncingScrollPhysics(),
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, ind) {
                             final docref = snapshot.data![ind].id;
 
                             return Padding(
-                                padding: EdgeInsets.only(right: 15),
+                                padding: const EdgeInsets.only(right: 15),
                                 child: GestureDetector(
                                   onTap: () => Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => AlbumPage(
                                               song: snapshot.data![ind]))),
-                                  child: Container(
+                                  child: SizedBox(
                                     height: h * 0.22,
                                     width: w * 0.45,
                                     child: Column(
@@ -143,7 +145,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        Container(
+                                        SizedBox(
                                           height: h * 0.13,
                                           width: w * 0.45,
                                           child: ClipRRect(
@@ -161,7 +163,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                           children: [
                                             Text(
                                               snapshot.data![ind]["song_name"],
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 18,
                                                   color: Colors.white),
                                             ),
@@ -171,7 +173,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                                       docref);
                                                   setState(() {});
                                                 },
-                                                icon: Icon(
+                                                icon: const Icon(
                                                   Icons.delete,
                                                   size: 25,
                                                   color: Colors.white,
@@ -180,7 +182,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                         ),
                                         Text(
                                           snapshot.data![ind]["artist_name"],
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 18,
                                               color: Colors.white),
                                         ),
@@ -191,7 +193,7 @@ class _LibraryPageState extends State<LibraryPage> {
                           },
                         );
                       } else {
-                        return SizedBox(
+                        return const SizedBox(
                           height: 80,
                           width: 250,
                           child: Center(
@@ -206,28 +208,28 @@ class _LibraryPageState extends State<LibraryPage> {
                     },
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
-                Text(
+                const Text(
                   "Your Podcasts",
                   style: TextStyle(fontSize: 22, color: Colors.white),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Container(
+                SizedBox(
                   height: h * 0.33,
                   width: w,
                   child: FutureBuilder(
                     future: getPodcast(),
                     builder: (context, AsyncSnapshot<List> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
                       if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.data!.length == 0) {
-                          return SizedBox(
+                        if (snapshot.data!.isEmpty) {
+                          return const SizedBox(
                             height: 80,
                             width: 250,
                             child: Center(
@@ -242,20 +244,20 @@ class _LibraryPageState extends State<LibraryPage> {
                         return ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
-                          physics: BouncingScrollPhysics(),
+                          physics: const BouncingScrollPhysics(),
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, ind) {
                             final docref = snapshot.data![ind].id;
 
                             return Padding(
-                              padding: EdgeInsets.only(right: 15),
+                              padding: const EdgeInsets.only(right: 15),
                               child: GestureDetector(
                                 onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => AlbumPage(
                                             song: snapshot.data![ind]))),
-                                child: Container(
+                                child: SizedBox(
                                   height: h * 0.30,
                                   width: w * 0.6,
                                   child: Column(
@@ -264,7 +266,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         height: h * 0.2,
                                         width: w * 0.6,
                                         child: ClipRRect(
@@ -282,7 +284,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                         children: [
                                           Text(
                                             snapshot.data![ind]["song_name"],
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 18,
                                                 color: Colors.white),
                                           ),
@@ -292,7 +294,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                                     docref);
                                                 setState(() {});
                                               },
-                                              icon: Icon(
+                                              icon: const Icon(
                                                 Icons.delete,
                                                 size: 25,
                                                 color: Colors.white,
@@ -301,7 +303,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                       ),
                                       Text(
                                         snapshot.data![ind]["artist_name"],
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 18, color: Colors.white),
                                       ),
                                     ],
@@ -312,7 +314,7 @@ class _LibraryPageState extends State<LibraryPage> {
                           },
                         );
                       } else {
-                        return SizedBox(
+                        return const SizedBox(
                           height: 80,
                           width: 250,
                           child: Center(
@@ -348,7 +350,7 @@ removeSongFromLibrary(docid) async {
 
   Toast.show("Removed from Music library",
       duration: 2,
-      textStyle: TextStyle(color: Colors.deepPurple),
+      textStyle: const TextStyle(color: Colors.deepPurple),
       backgroundColor: Colors.white);
 }
 
@@ -367,6 +369,6 @@ removePodcastFromLibrary(docid) async {
 
   Toast.show("Removed from Podcast library",
       duration: 2,
-      textStyle: TextStyle(color: Colors.deepPurple),
+      textStyle: const TextStyle(color: Colors.deepPurple),
       backgroundColor: Colors.white);
 }

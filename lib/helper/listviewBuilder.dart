@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:music/screens/album.dart';
 
 class BuildList extends StatefulWidget {
   final res;
-  BuildList({required this.res});
+  const BuildList({super.key, required this.res});
 
   @override
   State<BuildList> createState() => _BuildListState();
@@ -19,7 +17,7 @@ class _BuildListState extends State<BuildList> {
     // print("res from listviewbuiuld, :${widget.res}");
 
     return ListView.builder(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       scrollDirection: Axis.horizontal,
       itemCount: widget.res.length,
       itemBuilder: (context, index) {
@@ -34,7 +32,7 @@ class _BuildListState extends State<BuildList> {
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 10.0),
-              child: Container(
+              child: SizedBox(
                 height: h * 0.2,
                 width: w * 0.4,
                 child: Stack(
@@ -61,7 +59,7 @@ class _BuildListState extends State<BuildList> {
                           children: [
                             Text(
                               widget.res[index]["song_name"].toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
@@ -69,7 +67,7 @@ class _BuildListState extends State<BuildList> {
                             Text(
                               widget.res[index]["artist_name"].toString(),
                               textAlign: TextAlign.left,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w300,
                                   color: Colors.white),

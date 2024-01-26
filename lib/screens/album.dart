@@ -21,8 +21,8 @@ class AlbumPage extends StatefulWidget {
 }
 
 class _AlbumPageState extends State<AlbumPage> {
-  var _val = 0.0;
-  AudioPlayer _audioPlayer = AudioPlayer();
+  final _val = 0.0;
+  final AudioPlayer _audioPlayer = AudioPlayer();
   final _getcontroller = Get.put(AllAudioPlayers());
 
   var audioDuration;
@@ -91,12 +91,12 @@ class _AlbumPageState extends State<AlbumPage> {
           child: Container(
         height: h,
         width: w,
-        padding: EdgeInsets.only(left: 20, right: 20),
+        padding: const EdgeInsets.only(left: 20, right: 20),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Container(
@@ -116,23 +116,23 @@ class _AlbumPageState extends State<AlbumPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Text(
                       widget.song["song_name"].toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w600,
                           fontFamily: "Poppins",
                           color: Colors.white),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Text(
                       widget.song["artist_name"],
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
                           fontFamily: "Poppins",
@@ -141,26 +141,27 @@ class _AlbumPageState extends State<AlbumPage> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
-              Container(
+              SizedBox(
                 height: 100,
                 child: Stack(
                   children: [
                     Positioned(
                       left: 15,
                       top: 2,
-                      child: Container(
+                      child: SizedBox(
                         width: w * 0.8,
                         height: 10,
                         child: StreamBuilder<PositionData>(
                           stream: _positionDataStream,
                           builder: (context, snap) {
                             final posData = snap.data;
+                            
                             return ProgressBar(
                               timeLabelTextStyle:
-                                  TextStyle(color: Colors.white, fontSize: 12),
+                                  const TextStyle(color: Colors.white, fontSize: 12),
                               thumbRadius: 8,
                               barHeight: 4,
                               baseBarColor: Colors.white.withOpacity(0.2),
@@ -184,10 +185,10 @@ class _AlbumPageState extends State<AlbumPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
-                            Container(
+                            SizedBox(
                               height: 35,
                               child: Row(
                                 children: [
@@ -202,7 +203,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                                 widget.song["category"])
                                             : Toast.show(
                                                 "Already added to the fav",
-                                                textStyle: TextStyle(
+                                                textStyle: const TextStyle(
                                                     color: Colors.white,
                                                     backgroundColor:
                                                         Colors.black,
@@ -221,7 +222,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                           "Download started",
                                           backgroundColor: Colors.green,
                                           textStyle:
-                                              TextStyle(color: Colors.white),
+                                              const TextStyle(color: Colors.white),
                                         );
                                         final file = await DownloadSong()
                                             .downloadSong(
@@ -231,10 +232,10 @@ class _AlbumPageState extends State<AlbumPage> {
                                             "Song downloaded at ${file.path}",
                                             backgroundColor: Colors.green,
                                             textStyle:
-                                                TextStyle(color: Colors.white),
+                                                const TextStyle(color: Colors.white),
                                             duration: 3);
                                       },
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.downloading_outlined,
                                         size: 30,
                                         color: Colors.greenAccent,
@@ -244,7 +245,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                         await Share.share(
                                             "https://www.youtube.com/");
                                       },
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.share,
                                         size: 30,
                                         color: Colors.blueAccent,
@@ -282,9 +283,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                 }
 
                                 setState(() {
-                                  audioDuration = _audioPlayer.duration != null
-                                      ? _audioPlayer.duration
-                                      : 0.0;
+                                  audioDuration = _audioPlayer.duration ?? 0.0;
                                 });
                                 print("audio :$audioDuration");
                               }
@@ -293,12 +292,12 @@ class _AlbumPageState extends State<AlbumPage> {
                                 setState(() {});
                               },
                         child: !_audioPlayer.playing
-                            ? Icon(
+                            ? const Icon(
                                 Icons.play_circle_outline_outlined,
                                 size: 45,
                                 color: Colors.orange,
                               )
-                            : Icon(
+                            : const Icon(
                                 Icons.pause_circle_outline,
                                 size: 45,
                                 color: Colors.orange,
@@ -308,7 +307,7 @@ class _AlbumPageState extends State<AlbumPage> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
             ],
@@ -341,7 +340,7 @@ addmyFav(songName, artist, albumimageurl, url, categ) async {
   });
 
   Toast.show("Song added to your FavSongs",
-      textStyle: TextStyle(color: Colors.black, fontSize: 16),
+      textStyle: const TextStyle(color: Colors.black, fontSize: 16),
       duration: 2,
       backgroundColor: Colors.white);
 }

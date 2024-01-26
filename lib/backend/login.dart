@@ -1,16 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music/helper/colors.dart';
 import 'package:music/navtabs/home.dart';
-import 'package:music/navtabs/postpage.dart';
 import 'package:music/backend/register.dart';
 import 'package:toast/toast.dart';
 
 import 'database.dart';
-import '../navtabs/libraryNavPage.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -28,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _handleLogin() async {
-    CircularProgressIndicator();
+    const CircularProgressIndicator();
 
     if (_formKey.currentState!.validate()) {
       setState(() {
@@ -40,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
           setState(() {
             isLoading = false;
           });
-          Get.to(() => NavPages());
+          Get.to(() => const NavPages());
         } else {
           _emailController.clear();
           _passwordController.clear();
@@ -62,10 +61,10 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.white.withAlpha(40),
       body: isLoading
           ? Center(
-              child: Container(
+              child: SizedBox(
                 height: h * 0.05,
                 width: w * 0.1,
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               ),
             )
           : SafeArea(
@@ -73,20 +72,20 @@ class _LoginPageState extends State<LoginPage> {
                 child: Container(
                   width: w,
                   height: MediaQuery.of(context).size.height,
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Stack(children: [
                     Positioned(
                       top: 15,
                       child: Container(
                           height: 60,
-                          padding: EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(2),
                           width: w - 50,
                           decoration: BoxDecoration(
                             border: Border.all(),
                             color: whitealpha,
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               "Login",
                               style:
@@ -101,29 +100,29 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
+                            SizedBox(
                               width: w - 40,
                               child: TextFormField(
                                 enabled: true,
                                 controller: _emailController,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18, color: Colors.white),
                                 decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.white)),
-                                  errorBorder: OutlineInputBorder(
+                                  errorBorder: const OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.red)),
                                   enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Colors.brown[400]!)),
                                   fillColor: Colors.white,
-                                  labelStyle: TextStyle(color: Colors.white),
-                                  errorStyle: TextStyle(
+                                  labelStyle: const TextStyle(color: Colors.white),
+                                  errorStyle: const TextStyle(
                                       fontSize: 16, color: Colors.amber),
                                   labelText: 'Email',
-                                  border: OutlineInputBorder(
+                                  border: const OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.white)),
                                 ),
@@ -135,30 +134,30 @@ class _LoginPageState extends State<LoginPage> {
                                 },
                               ),
                             ),
-                            SizedBox(height: 16),
-                            Container(
+                            const SizedBox(height: 16),
+                            SizedBox(
                               width: w - 40,
                               child: TextFormField(
                                 controller: _passwordController,
                                 obscureText: true,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18, color: Colors.white),
                                 decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.white)),
-                                  errorBorder: OutlineInputBorder(
+                                  errorBorder: const OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.red)),
                                   enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Colors.brown[400]!)),
                                   fillColor: Colors.white,
-                                  labelStyle: TextStyle(color: Colors.white),
-                                  errorStyle: TextStyle(
+                                  labelStyle: const TextStyle(color: Colors.white),
+                                  errorStyle: const TextStyle(
                                       fontSize: 16, color: Colors.amber),
                                   labelText: 'Password',
-                                  border: OutlineInputBorder(),
+                                  border: const OutlineInputBorder(),
                                 ),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -168,14 +167,14 @@ class _LoginPageState extends State<LoginPage> {
                                 },
                               ),
                             ),
-                            SizedBox(height: 16),
-                            Container(
+                            const SizedBox(height: 16),
+                            SizedBox(
                                 height: 50,
                                 width: 100,
                                 child: Card(
                                   child: TextButton(
                                     onPressed: _handleLogin,
-                                    child: Text(
+                                    child: const Text(
                                       'Login',
                                       style: TextStyle(
                                           fontSize: 18,
@@ -195,14 +194,14 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             Row(
                               children: [
-                                Text(
+                                const Text(
                                   "Don't have an Account?",
                                   style: TextStyle(
                                       fontSize: 17, color: Colors.white),
                                 ),
                                 TextButton(
-                                    onPressed: () => Get.to(() => SignupPage()),
-                                    child: Text(
+                                    onPressed: () => Get.to(() => const SignupPage()),
+                                    child: const Text(
                                       "Register",
                                       style: TextStyle(
                                           fontSize: 17, color: Colors.blue),
@@ -214,10 +213,10 @@ class _LoginPageState extends State<LoginPage> {
                     Positioned(
                         top: h * 0.15,
                         left: 0,
-                        child: Container(
+                        child: SizedBox(
                           height: 50,
                           width: w * 0.7,
-                          child: Row(
+                          child: const Row(
                             children: [
                               Expanded(
                                 child: Divider(
@@ -232,10 +231,10 @@ class _LoginPageState extends State<LoginPage> {
                     Positioned(
                         bottom: 20,
                         right: 0,
-                        child: Container(
+                        child: SizedBox(
                           height: 50,
                           width: w * 0.7,
-                          child: Row(
+                          child: const Row(
                             children: [
                               Expanded(
                                 child: Divider(

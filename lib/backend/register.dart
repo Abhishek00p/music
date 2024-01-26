@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music/backend/database.dart';
 import 'package:music/backend/login.dart';
-import 'package:toast/toast.dart';
 import 'package:music/helper/colors.dart';
 
 class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
+
   @override
   _SignupPageState createState() => _SignupPageState();
 }
@@ -40,7 +41,7 @@ class _SignupPageState extends State<SignupPage> {
           });
 
           Navigator.push(
-              context, MaterialPageRoute(builder: (_) => LoginPage()));
+              context, MaterialPageRoute(builder: (_) => const LoginPage()));
         } else {
           emptyallField();
           setState(() {
@@ -72,10 +73,10 @@ class _SignupPageState extends State<SignupPage> {
       backgroundColor: Colors.white.withAlpha(40),
       body: isLoading
           ? Center(
-              child: Container(
+              child: SizedBox(
                 height: h * 0.05,
                 width: w * 0.1,
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               ),
             )
           : SafeArea(
@@ -83,20 +84,20 @@ class _SignupPageState extends State<SignupPage> {
                 child: Container(
                   width: w,
                   height: MediaQuery.of(context).size.height,
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Stack(children: [
                     Positioned(
                       top: 15,
                       child: Container(
                           height: 60,
-                          padding: EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(2),
                           width: w - 50,
                           decoration: BoxDecoration(
                             border: Border.all(),
                             color: whitealpha,
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               "Register",
                               style:
@@ -111,58 +112,58 @@ class _SignupPageState extends State<SignupPage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
+                            SizedBox(
                               width: w - 40,
                               child: TextFormField(
                                 controller: _nameController,
                                 obscureText: true,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18, color: Colors.white),
                                 decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.white)),
-                                  errorBorder: OutlineInputBorder(
+                                  errorBorder: const OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.red)),
                                   enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Colors.brown[400]!)),
                                   fillColor: Colors.white,
-                                  labelStyle: TextStyle(color: Colors.white),
-                                  errorStyle: TextStyle(
+                                  labelStyle: const TextStyle(color: Colors.white),
+                                  errorStyle: const TextStyle(
                                       fontSize: 16, color: Colors.amber),
                                   labelText: 'UserName',
-                                  border: OutlineInputBorder(),
+                                  border: const OutlineInputBorder(),
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
-                            Container(
+                            SizedBox(
                               width: w - 40,
                               child: TextFormField(
                                 enabled: true,
                                 controller: _emailController,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18, color: Colors.white),
                                 decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.white)),
-                                  errorBorder: OutlineInputBorder(
+                                  errorBorder: const OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.red)),
                                   enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Colors.brown[400]!)),
                                   fillColor: Colors.white,
-                                  labelStyle: TextStyle(color: Colors.white),
-                                  errorStyle: TextStyle(
+                                  labelStyle: const TextStyle(color: Colors.white),
+                                  errorStyle: const TextStyle(
                                       fontSize: 16, color: Colors.amber),
                                   labelText: 'Email',
-                                  border: OutlineInputBorder(
+                                  border: const OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.white)),
                                 ),
@@ -179,13 +180,13 @@ class _SignupPageState extends State<SignupPage> {
                                 },
                               ),
                             ),
-                            SizedBox(height: 16),
-                            Container(
+                            const SizedBox(height: 16),
+                            SizedBox(
                               width: w - 40,
                               child: TextFormField(
                                 controller: _passwordController,
                                 obscureText: hide ? true : false,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18, color: Colors.white),
                                 decoration: InputDecoration(
                                   suffixIcon: GestureDetector(
@@ -193,30 +194,30 @@ class _SignupPageState extends State<SignupPage> {
                                       await hidePass();
                                     },
                                     child: !hide
-                                        ? Icon(
+                                        ? const Icon(
                                             Icons.remove_red_eye,
                                             color: Colors.white,
                                           )
-                                        : Icon(
+                                        : const Icon(
                                             Icons.lock,
                                             color: Colors.white,
                                           ),
                                   ),
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.white)),
-                                  errorBorder: OutlineInputBorder(
+                                  errorBorder: const OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.red)),
                                   enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Colors.brown[400]!)),
                                   fillColor: Colors.white,
-                                  labelStyle: TextStyle(color: Colors.white),
-                                  errorStyle: TextStyle(
+                                  labelStyle: const TextStyle(color: Colors.white),
+                                  errorStyle: const TextStyle(
                                       fontSize: 16, color: Colors.amber),
                                   labelText: 'Password',
-                                  border: OutlineInputBorder(),
+                                  border: const OutlineInputBorder(),
                                 ),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -229,14 +230,14 @@ class _SignupPageState extends State<SignupPage> {
                                 },
                               ),
                             ),
-                            SizedBox(height: 16),
-                            Container(
+                            const SizedBox(height: 16),
+                            SizedBox(
                                 height: 50,
                                 width: 100,
                                 child: Card(
                                   child: TextButton(
                                     onPressed: _handleSignup,
-                                    child: Text(
+                                    child: const Text(
                                       'SignUp',
                                       style: TextStyle(
                                           fontSize: 18,
@@ -254,14 +255,14 @@ class _SignupPageState extends State<SignupPage> {
                         left: w * 0.1,
                         child: Row(
                           children: [
-                            Text(
+                            const Text(
                               "Already have an Account?",
                               style:
                                   TextStyle(fontSize: 17, color: Colors.white),
                             ),
                             TextButton(
-                                onPressed: () => Get.to(() => LoginPage()),
-                                child: Text(
+                                onPressed: () => Get.to(() => const LoginPage()),
+                                child: const Text(
                                   "Login",
                                   style: TextStyle(
                                       fontSize: 17, color: Colors.blue),
@@ -271,10 +272,10 @@ class _SignupPageState extends State<SignupPage> {
                     Positioned(
                         top: h * 0.15,
                         left: 0,
-                        child: Container(
+                        child: SizedBox(
                           height: 50,
                           width: w * 0.7,
-                          child: Row(
+                          child: const Row(
                             children: [
                               Expanded(
                                 child: Divider(
@@ -289,10 +290,10 @@ class _SignupPageState extends State<SignupPage> {
                     Positioned(
                         bottom: 20,
                         right: 0,
-                        child: Container(
+                        child: SizedBox(
                           height: 50,
                           width: w * 0.7,
-                          child: Row(
+                          child: const Row(
                             children: [
                               Expanded(
                                 child: Divider(

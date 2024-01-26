@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music/helper/colors.dart';
@@ -39,11 +37,11 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 height: 60,
                 child: Container(
                   height: 50,
-                  padding: EdgeInsets.only(left: 20, right: 20),
+                  padding: const EdgeInsets.only(left: 20, right: 20),
                   width: w - 50,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,7 +54,7 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
                           child: Center(
                             child: Text(
                               username[0].capitalize!,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
@@ -64,7 +62,7 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
-                      Text(
+                      const Text(
                         "Discover",
                         style: TextStyle(fontSize: 24, color: Colors.white),
                       ),
@@ -73,9 +71,9 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SearchPage()));
+                                    builder: (context) => const SearchPage()));
                           },
-                          child: Icon(
+                          child: const Icon(
                             Icons.search,
                             size: 24,
                             color: Colors.white,
@@ -84,11 +82,11 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 50,
                 width: w,
                 child: TabBar(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   indicatorColor: Colors.transparent,
                   tabs: [
                     GestureDetector(
@@ -105,7 +103,7 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
                             color: _tabController.index == 0
                                 ? Colors.deepOrange
                                 : Colors.white.withAlpha(20)),
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             "Music",
                             style: TextStyle(fontSize: 18, color: Colors.white),
@@ -127,7 +125,7 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
                             color: _tabController.index == 1
                                 ? Colors.deepOrange
                                 : Colors.white.withAlpha(20)),
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             "Podcast",
                             style: TextStyle(fontSize: 18, color: Colors.white),
@@ -138,13 +136,13 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
                   ],
                 ),
               ),
-              Container(
+              SizedBox(
                 height: h * 0.72,
                 width: w,
                 child: TabBarView(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   controller: _tabController,
-                  children: [
+                  children: const [
                     // Widgets for the first tab
                     Home(),
                     PodcastPage(),

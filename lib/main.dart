@@ -2,8 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music/backend/login.dart';
-import 'package:music/navtabs/authenticate.dart';
-import 'package:toast/toast.dart';
 import 'helper/firebase_options.dart';
 
 void main() async {
@@ -12,7 +10,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(GetMaterialApp(
+  runApp(const GetMaterialApp(
     debugShowCheckedModeBanner: false,
     home: LoginPage(),
   ));

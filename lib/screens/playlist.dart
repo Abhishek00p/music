@@ -31,22 +31,22 @@ class _PlayListPlayerState extends State<PlayListPlayer> {
     return Scaffold(
       backgroundColor: whitealpha,
       body: SafeArea(
-          child: Container(
+          child: SizedBox(
         height: h,
         width: w,
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Center(
                 child: Container(
                   child: Column(
                     children: [
-                      Container(
+                      SizedBox(
                         height: h * 0.3,
                         width: w * 0.7,
                         child: ClipRRect(
@@ -57,36 +57,36 @@ class _PlayListPlayerState extends State<PlayListPlayer> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       Text(
                         "Singer ${widget.ArtistName}",
-                        style: TextStyle(fontSize: 22, color: Colors.white),
+                        style: const TextStyle(fontSize: 22, color: Colors.white),
                       ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Text(
                 "All time Best from ${widget.ArtistName}",
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w400,
                     color: Colors.white),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Expanded(
                   child: ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: widget.res.length,
                 itemBuilder: (context, ind) {
@@ -102,14 +102,14 @@ class _PlayListPlayerState extends State<PlayListPlayer> {
                         width: w - 60,
                         decoration: BoxDecoration(
                             color: Colors.grey[400]!.withOpacity(0.2),
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 topRight: Radius.circular(20),
                                 bottomRight: Radius.circular(20))
                             // border: Border.all(color: Colors.white)
                             ),
                         child: Row(
                           children: [
-                            Container(
+                            SizedBox(
                               height: 40,
                               width: 40,
                               child: Image.network(
@@ -117,12 +117,12 @@ class _PlayListPlayerState extends State<PlayListPlayer> {
                                 fit: BoxFit.fill,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Text(
                               widget.res[ind]["song_name"].toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.white),
