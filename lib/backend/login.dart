@@ -27,7 +27,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _handleLogin() async {
-    const CircularProgressIndicator();
+    const Center(
+      child: CircularProgressIndicator(),
+    );
 
     if (_formKey.currentState!.validate()) {
       setState(() {
@@ -64,7 +66,9 @@ class _LoginPageState extends State<LoginPage> {
               child: SizedBox(
                 height: h * 0.05,
                 width: w * 0.1,
-                child: const CircularProgressIndicator(),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
               ),
             )
           : SafeArea(
@@ -118,7 +122,8 @@ class _LoginPageState extends State<LoginPage> {
                                       borderSide: BorderSide(
                                           color: Colors.brown[400]!)),
                                   fillColor: Colors.white,
-                                  labelStyle: const TextStyle(color: Colors.white),
+                                  labelStyle:
+                                      const TextStyle(color: Colors.white),
                                   errorStyle: const TextStyle(
                                       fontSize: 16, color: Colors.amber),
                                   labelText: 'Email',
@@ -153,7 +158,8 @@ class _LoginPageState extends State<LoginPage> {
                                       borderSide: BorderSide(
                                           color: Colors.brown[400]!)),
                                   fillColor: Colors.white,
-                                  labelStyle: const TextStyle(color: Colors.white),
+                                  labelStyle:
+                                      const TextStyle(color: Colors.white),
                                   errorStyle: const TextStyle(
                                       fontSize: 16, color: Colors.amber),
                                   labelText: 'Password',
@@ -200,7 +206,8 @@ class _LoginPageState extends State<LoginPage> {
                                       fontSize: 17, color: Colors.white),
                                 ),
                                 TextButton(
-                                    onPressed: () => Get.to(() => const SignupPage()),
+                                    onPressed: () =>
+                                        Get.to(() => const SignupPage()),
                                     child: const Text(
                                       "Register",
                                       style: TextStyle(

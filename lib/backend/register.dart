@@ -76,7 +76,9 @@ class _SignupPageState extends State<SignupPage> {
               child: SizedBox(
                 height: h * 0.05,
                 width: w * 0.1,
-                child: const CircularProgressIndicator(),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
               ),
             )
           : SafeArea(
@@ -130,7 +132,8 @@ class _SignupPageState extends State<SignupPage> {
                                       borderSide: BorderSide(
                                           color: Colors.brown[400]!)),
                                   fillColor: Colors.white,
-                                  labelStyle: const TextStyle(color: Colors.white),
+                                  labelStyle:
+                                      const TextStyle(color: Colors.white),
                                   errorStyle: const TextStyle(
                                       fontSize: 16, color: Colors.amber),
                                   labelText: 'UserName',
@@ -159,7 +162,8 @@ class _SignupPageState extends State<SignupPage> {
                                       borderSide: BorderSide(
                                           color: Colors.brown[400]!)),
                                   fillColor: Colors.white,
-                                  labelStyle: const TextStyle(color: Colors.white),
+                                  labelStyle:
+                                      const TextStyle(color: Colors.white),
                                   errorStyle: const TextStyle(
                                       fontSize: 16, color: Colors.amber),
                                   labelText: 'Email',
@@ -213,7 +217,8 @@ class _SignupPageState extends State<SignupPage> {
                                       borderSide: BorderSide(
                                           color: Colors.brown[400]!)),
                                   fillColor: Colors.white,
-                                  labelStyle: const TextStyle(color: Colors.white),
+                                  labelStyle:
+                                      const TextStyle(color: Colors.white),
                                   errorStyle: const TextStyle(
                                       fontSize: 16, color: Colors.amber),
                                   labelText: 'Password',
@@ -261,7 +266,8 @@ class _SignupPageState extends State<SignupPage> {
                                   TextStyle(fontSize: 17, color: Colors.white),
                             ),
                             TextButton(
-                                onPressed: () => Get.to(() => const LoginPage()),
+                                onPressed: () =>
+                                    Get.to(() => const LoginPage()),
                                 child: const Text(
                                   "Login",
                                   style: TextStyle(

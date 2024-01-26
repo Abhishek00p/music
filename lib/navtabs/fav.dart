@@ -55,11 +55,14 @@ class _FavSongsState extends State<FavSongs> {
               future: getReady(),
               builder: (context, AsyncSnapshot<List> snap) {
                 if (snap.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snap.hasError) {
                   return const SizedBox(
                     height: 50,
-                    child: Text("Retry in few secs"),
+                    child: Text(
+                      "Retry in few secs",
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
                   );
                 } else if (snap.connectionState == ConnectionState.done) {
                   if (snap.hasData) {
@@ -71,8 +74,8 @@ class _FavSongsState extends State<FavSongs> {
                         itemBuilder: (context, index) {
                           final docref = snap.data![index].id;
                           return Padding(
-                            padding:
-                                const EdgeInsets.only(bottom: 15, left: 15, right: 5),
+                            padding: const EdgeInsets.only(
+                                bottom: 15, left: 15, right: 5),
                             child: Row(
                               children: [
                                 Container(
